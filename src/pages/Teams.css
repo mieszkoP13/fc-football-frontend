@@ -1,4 +1,4 @@
-.wrap-leagues {
+.wrap-teams {
     height: auto;
     width: 900px;
     display: inline-flex;
@@ -15,12 +15,12 @@
     padding: 2%;
 }
 
-.leagues-h1 {
+.teams-h1 {
     color: var(--white);
     margin-bottom: 2%;
 }
 
-.leagues-it {
+.teams-it {
     box-shadow: 1px 2px 3px black;
     background-color: var(--green-lighter);
     border-radius: 8px;
@@ -33,13 +33,13 @@
     text-decoration: none;
 }
 
-.leagues-it-txt {
+.teams-it-txt {
     margin: 0 15px;
     font-size: 22px;
     color: var(--green);
 }
 
-.btns-leagues {
+.btns-teams {
     align-items: last baseline;
     align-content: last baseline;
 }
