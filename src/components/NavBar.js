@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import useLoginStatus from "../hooks/useLoginStatus";
+import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
 
 const NavBar = (props) => {
   const [isActive, setActive] = useState(false);
-  let isLoggedIn = useLoginStatus();
+  let isLoggedIn = useLocalStorageStatus("token");
 
   useEffect(() => {
     window.matchMedia("(min-width: 768px)").addEventListener("change", (e) => {
@@ -31,6 +31,9 @@ const NavBar = (props) => {
           </li>
           <li>
             <Link onClick={hideBurger} to="/Leagues">Leagues</Link>
+          </li>
+          <li>
+            <Link onClick={hideBurger} to="/FavouriteLeagues">Favourite Leagues</Link>
           </li>
           {isLoggedIn ? (
             <li>

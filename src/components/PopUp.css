@@ -27,7 +27,7 @@
     display: block;
     background-color: var(--green-light);
     color: var(--black);
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     margin: -100px 0 0 -200px;

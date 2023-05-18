@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Profile.css";
-import useLoginStatus from "../hooks/useLoginStatus";
+import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
 import EditPopUp from "../components/EditPopUp";
 import DeleteProfileButton from "../components/DeleteProfileButton";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [token, setToken] = useState(null);
-  const isLoggedIn = useLoginStatus();
+  const isLoggedIn = useLocalStorageStatus("token");
   const navigate = useNavigate();
   const [showPopUpFirstName, setShowPopUpFirstName] = useState(false);
   const [showPopUpLastName, setShowPopUpLastName] = useState(false);
@@ -44,6 +44,7 @@ const Profile = () => {
   }, [token, isLoggedIn,navigate]);
 
   const logOut = () => {
+    localStorage.removeItem("roles");
     localStorage.removeItem("token");
     setProfile(null);
     window.location.reload();

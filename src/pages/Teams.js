@@ -1,13 +1,13 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import useLoginStatus from "../hooks/useLoginStatus";
+import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
 import "./Teams.css";
 
 const Teams = (props) => {
     const location = useLocation();
     const { leagueName, season } = useParams()
-    let isLoggedIn = useLoginStatus();
+    let isLoggedIn = useLocalStorageStatus("token");
 
     return (
     <div className="wrap-teams">

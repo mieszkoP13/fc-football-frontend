@@ -74,19 +74,6 @@ input {
     margin-bottom: 10px;
 }
 
-.btn-open-pop {
-    width: 200px;
-    display: block;
-    border: none;
-    border-radius: 4px;
-    background-color: rgb(101, 101, 224);
-    color: var(--black);
-    font-size: 18px;
-    margin-top: 25px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
 .login-ways-wrap{
     margin-top: 20px;
     height: 45px;
