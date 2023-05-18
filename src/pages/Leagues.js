@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import axios from "axios";
 import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
+import useUserRoleStatus from "../hooks/useUserRoleStatus";
 import useLocalStorage from "../hooks/useLocalStorage";
 import PopUp from "../components/PopUp";
 import AddLeague from "../components/AddLeague";
@@ -10,31 +11,18 @@ import "./Leagues.css";
 
 const Leagues = (props) => {
     let isLoggedIn = useLocalStorageStatus("token");
-    let roles = useLocalStorage("roles")
-    const [isUserModerator] = useState(()=>{
-      try {
-        return JSON.parse(roles[0]).includes("ROLE_MODERATOR")
-      } catch {
-        return false
-      }
-    })
+    let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
     
     const [showPopUp, setShowPopUp] = useState(false);
     const [popUpMessage, setPopUpMessage] = useState("")
   
-    const [leagues, setLeagues] = useState(<></>)
+    const [leagues, setLeagues] = useState([])
 
     useEffect(() => {
         axios
           .get("https://fcfootball.azurewebsites.net/api/v1/leagues")
           .then((res) => {
-            setLeagues( res.data.map(league => 
-              <Link className="leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.teams } >
-                <span className="leagues-it-txt">{league.name}</span>
-                <span className="leagues-it-txt">{league.season}</span>
-                <span className="leagues-it-txt">{league.country}</span>
-              </Link>
-            ) )
+            setLeagues(res.data)
           })
           .catch((err) => console.log(err));
     },[isLoggedIn,showPopUp])
@@ -56,7 +44,13 @@ const Leagues = (props) => {
               </span>
             </PopUp>
             {isUserModerator ? (<AddLeague updatePopUpMessage={updatePopUpMessage}/>):(<></>)}
-            {leagues}
+            {leagues.map(league => 
+              <Link className="leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.id } >
+                <span className="leagues-it-txt">{league.name}</span>
+                <span className="leagues-it-txt">{league.season}</span>
+                <span className="leagues-it-txt">{league.country}</span>
+              </Link>
+            )}
         </>
       ) : (
         <span>Content unavailable, log in to grant access.</span>
