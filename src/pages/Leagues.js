@@ -59,9 +59,10 @@ const Leagues = (props) => {
                   <span className="leagues-it-txt">{league.name}</span>
                   <span className="leagues-it-txt">{league.season}</span>
                   <span className="leagues-it-txt">{league.country}</span>
+                  {isUserModerator ? (
                   <button className="btn-edit" onClick={e => showEditLeague(e, arrayID)}>
                     <i className="fa-solid fa-pen-to-square"></i>
-                  </button>
+                  </button>):(<></>)}
               </Link>
               )}
               </>

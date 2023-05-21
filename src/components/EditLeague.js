@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import "./EditLeague.css"
@@ -9,7 +9,6 @@ const SEASONS = ["1989/90","1990/91","1991/92","1992/93","1993/94","1994/95","19
 const EditLeague = ({updatePopUpMessage,league}) => {
 
     const [edit, setEdit] = useState(true)
-    const showEdit = () => setEdit(true)
     const hideEdit = () => setEdit(false)
 
     const {
