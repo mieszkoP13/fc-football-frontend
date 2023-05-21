@@ -4,9 +4,9 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 import axios from "axios";
 import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
 import useUserRoleStatus from "../hooks/useUserRoleStatus";
-import useLocalStorage from "../hooks/useLocalStorage";
 import PopUp from "../components/PopUp";
 import AddLeague from "../components/AddLeague";
+import EditLeague from "../components/EditLeague";
 import "./Leagues.css";
 
 const Leagues = (props) => {
@@ -17,6 +17,13 @@ const Leagues = (props) => {
     const [popUpMessage, setPopUpMessage] = useState("")
   
     const [leagues, setLeagues] = useState([])
+    const [editLeagueID, setEditLeagueID] = useState(-1)
+
+    const showEditLeague = (e,id) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setEditLeagueID(id)
+    }
 
     useEffect(() => {
         axios
@@ -25,11 +32,12 @@ const Leagues = (props) => {
             setLeagues(res.data)
           })
           .catch((err) => console.log(err));
-    },[isLoggedIn,showPopUp])
+    },[isLoggedIn,showPopUp,editLeagueID])
 
     const updatePopUpMessage = (popUpMsg) => {
       setPopUpMessage(popUpMsg)
       setShowPopUp(true);
+      setEditLeagueID(-1)
     }
 
     return (
@@ -44,12 +52,19 @@ const Leagues = (props) => {
               </span>
             </PopUp>
             {isUserModerator ? (<AddLeague updatePopUpMessage={updatePopUpMessage}/>):(<></>)}
-            {leagues.map(league => 
-              <Link className="leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.id } >
-                <span className="leagues-it-txt">{league.name}</span>
-                <span className="leagues-it-txt">{league.season}</span>
-                <span className="leagues-it-txt">{league.country}</span>
+            {leagues.map((league, arrayID) => 
+              <>
+              {editLeagueID === arrayID ? (<EditLeague updatePopUpMessage={updatePopUpMessage} league={league}/>) : (
+                <Link className="leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.id } >
+                  <span className="leagues-it-txt">{league.name}</span>
+                  <span className="leagues-it-txt">{league.season}</span>
+                  <span className="leagues-it-txt">{league.country}</span>
+                  <button className="btn-edit" onClick={e => showEditLeague(e, arrayID)}>
+                    <i className="fa-solid fa-pen-to-square"></i>
+                  </button>
               </Link>
+              )}
+              </>
             )}
         </>
       ) : (
