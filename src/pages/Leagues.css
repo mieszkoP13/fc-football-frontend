@@ -125,3 +125,12 @@
     border: none;
     cursor: pointer;
 }
+
+.btn-follow {
+    margin: 0 15px;
+    font-size: 23px;
+    color: var(--white);
+    background-color: var(--green-lighter);
+    border: none;
+    cursor: pointer;
+}

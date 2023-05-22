@@ -33,7 +33,7 @@ const NavBar = (props) => {
             <Link onClick={hideBurger} to="/Leagues">Leagues</Link>
           </li>
           <li>
-            <Link onClick={hideBurger} to="/FavouriteLeagues">Favourite Leagues</Link>
+            <Link onClick={hideBurger} to="/FollowedLeagues">Followed Leagues</Link>
           </li>
           {isLoggedIn ? (
             <li>
