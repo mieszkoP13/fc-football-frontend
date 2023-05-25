@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar";
 import Leagues from "./pages/Leagues";
 import FollowedLeagues from "./pages/FollowedLeagues";
 import Teams from "./pages/Teams";
+import Matches from "./pages/Matches";
 
 const RouteSwitch = () => {
   return (
@@ -19,6 +20,7 @@ const RouteSwitch = () => {
         <Route path="/Leagues/:leagueName/:season/Teams" element={<Teams />} />
         <Route path="/FollowedLeagues" element={<FollowedLeagues />} />
         <Route path="/FollowedLeagues/:leagueName/:season/Teams" element={<Teams />} />
+        <Route path="/Matches" element={<Matches />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/SignIn" element={<SignIn/>} />
         <Route path="/users/profile" element={<Profile />} />
