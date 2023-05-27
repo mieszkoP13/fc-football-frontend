@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
+import useLocalStorage from "../hooks/useLocalStorage";
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import AddTeam from "../components/AddTeam";
 import EditTeam from "../components/EditTeam";
@@ -14,7 +15,10 @@ const Teams = (props) => {
     const location = useLocation();
     const { leagueName, season } = useParams()
     let isLoggedIn = useLocalStorageStatus("token");
+    let token = useLocalStorage("token")
     let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
+
+    const [showPopUpDelete, setShowPopUpDelete] = useState(false);
 
     const [showPopUp, setShowPopUp] = useState(false);
     const [popUpMessage, setPopUpMessage] = useState("")
@@ -23,12 +27,7 @@ const Teams = (props) => {
 
     const [teams, setTeams] = useState([])
     const [editTeamID, setEditTeamID] = useState(-1)
-
-    const showEditTeam = (e,id) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setEditTeamID(id)
-    }
+    const [deleteTeamID, setDeleteTeamID] = useState(-1)
 
     useEffect(() => {
       axios
@@ -37,7 +36,7 @@ const Teams = (props) => {
           setTeams(res.data.teams)
         })
         .catch((err) => console.log(err));
-    },[isLoggedIn,showPopUp,leagueId,editTeamID])
+    },[isLoggedIn,showPopUp,leagueId,deleteTeamID,editTeamID])
 
     const updatePopUpMessage = (popUpMsg) => {
       setPopUpMessage(popUpMsg)
@@ -45,10 +44,43 @@ const Teams = (props) => {
       setEditTeamID(-1)
     }
 
+    const showEditTeam = (e,id) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setEditTeamID(id)
+    }
+
+    const showDeleteTeam = (e,id) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDeleteTeamID(id)
+      setShowPopUpDelete(true)
+    }
+
+    const deleteTeam = (id) => {
+      axios
+        .delete(
+          `https://fcfootball.azurewebsites.net/api/v1/teams/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token[0]}`,
+            },
+          })
+        .then((res) => {
+          console.log(res)
+          setDeleteTeamID(-1)
+        })
+        .catch((err) => {
+          console.log(err)
+          setDeleteTeamID(-1)
+        });
+    };
+
     return (
     <div className="wrap-teams">
       {isLoggedIn ? (
         <>
+          <h1 className="teams-h1">Available teams</h1>
           {showPopUp ? (
           <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
             <h1 className="teams-popup-h1">Add Team info</h1>
@@ -56,17 +88,31 @@ const Teams = (props) => {
               {popUpMessage}
             </span>
           </PopUp>):(<></>)}
-          <h1 className="teams-h1">Available teams</h1>
           {isUserModerator ? (<AddTeam updatePopUpMessage={updatePopUpMessage} leagueId={leagueId}/>):(<></>)}
+
+          {showPopUpDelete ? (
+            <PopUp setShow={setShowPopUpDelete} customFunction={()=>deleteTeam(deleteTeamID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
+              <h1 className="sign-in-err-h1">
+                Are you sure you want to delete this team?
+              </h1>
+              <span>This action is irreversible</span>
+            </PopUp>) : (<></>)
+          }
+
           {teams.map((team, arrayID) => 
           <>
             {editTeamID === arrayID ? (<EditTeam updatePopUpMessage={updatePopUpMessage} leagueId={leagueId} team={team}/>) : (
             <div className="teams-it">
               <span className="teams-it-txt">{team.name}</span>
               {isUserModerator ? (
-              <button className="btn-edit" onClick={e => showEditTeam(e, arrayID)}>
-                <i className="fa-solid fa-pen-to-square"></i>
-              </button>):(<></>)}
+              <div>
+                <button className="btn-edit" onClick={e => showEditTeam(e, arrayID)}>
+                  <i className="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button className="btn-edit" onClick={e => showDeleteTeam(e, team.id)}>
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>):(<></>)}
             </div>)
             }
           </>

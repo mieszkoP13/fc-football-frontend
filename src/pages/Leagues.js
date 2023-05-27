@@ -8,7 +8,6 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import PopUp from "../components/PopUp";
 import AddLeague from "../components/AddLeague";
 import EditLeague from "../components/EditLeague";
-import DeleteLeague from "../components/DeleteLeague";
 import "./Leagues.css";
 
 const Leagues = (props) => {
@@ -26,12 +25,6 @@ const Leagues = (props) => {
     const [editLeagueID, setEditLeagueID] = useState(-1)
     const [deleteLeagueID, setDeleteLeagueID] = useState(-1)
 
-    const showEditLeague = (e,id) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setEditLeagueID(id)
-    }
-
     useEffect(() => {
       axios
         .get("https://fcfootball.azurewebsites.net/api/v1/leagues")
@@ -39,7 +32,7 @@ const Leagues = (props) => {
           setLeagues(res.data)
         })
         .catch((err) => console.log(err));
-    },[isLoggedIn,showPopUp,leagues,editLeagueID,followedLeaguesIDs])
+    },[isLoggedIn,showPopUp,editLeagueID,deleteLeagueID,followedLeaguesIDs])
 
     useEffect(() => {
       axios
@@ -53,6 +46,19 @@ const Leagues = (props) => {
         })
         .catch((err) => console.log(err));
     },[])
+
+    const showEditLeague = (e,id) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setEditLeagueID(id)
+    }
+
+    const showDeleteLeague = (e,id) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDeleteLeagueID(id)
+      setShowPopUpDelete(true)
+    }
 
     const updatePopUpMessage = (popUpMsg) => {
       setPopUpMessage(popUpMsg)
@@ -90,21 +96,18 @@ const Leagues = (props) => {
         .catch((err) => console.log(err));
     }
 
-    const showDeleteLeague = (e,id) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setDeleteLeagueID(id)
-      setShowPopUpDelete(true)
-    }
-
     const deleteLeague = (id) => {
       axios
         .delete(
           `https://fcfootball.azurewebsites.net/api/v1/leagues/${id}`)
         .then((res) => {
           console.log(res)
+          setDeleteLeagueID(-1)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err)
+          setDeleteLeagueID(-1)
+        });
     };
 
     return (
