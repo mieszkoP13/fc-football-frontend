@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
 import axios from "axios";
-import "./AddMatch.css"
+import "./EditMatch.css"
 const RE_NAME = /^\S.{3,20}$/;
 
-const AddMatch = ({updatePopUpMessage}) => {
+const EditMatch = ({updatePopUpMessage,match}) => {
     let isLoggedIn = useLocalStorageStatus("token");
 
-    const [edit, setEdit] = useState(false)
     const [leagues, setLeagues] = useState([])
     const [teams, setTeams] = useState(undefined)
-    const showEdit = () => setEdit(true)
+
+    const [edit, setEdit] = useState(true)
     const hideEdit = () => setEdit(false)
 
     const {
@@ -20,7 +20,20 @@ const AddMatch = ({updatePopUpMessage}) => {
         handleSubmit,
         reset,
         watch,
-    } = useForm();
+      } = useForm({defaultValues: {leagueId: match.name, homeTeamId: match.homeTeamId, awayTeamId: match.awayTeamId, homeTeamScore: match.homeTeamScore, awayTeamScore: match.awayTeamScore,date: match.date, time: match.time}});
+
+    const onSubmit = (data) => {
+        hideEdit()
+        reset()
+        axios
+          .put(`https://fcfootball.azurewebsites.net/api/v1/matches/${match.id}`,data)
+          .then((res) => {
+            updatePopUpMessage("Success. Match has been edited.")
+          })
+          .catch((err) => {
+            updatePopUpMessage("Error. Match hasn't been edited.")
+          });
+    }
 
     useEffect(() => {
         axios
@@ -38,24 +51,8 @@ const AddMatch = ({updatePopUpMessage}) => {
 
     },[watch('leagueId')])
 
-    const onSubmit = (data) => {
-        hideEdit()
-        reset()
-        data.time = `${data.time}:00`
-
-        axios
-          .post("https://fcfootball.azurewebsites.net/api/v1/matches",data)
-          .then((res) => {
-            updatePopUpMessage("Success. Match has been added.")
-          })
-          .catch((err) => {
-            updatePopUpMessage("Error. Match hasn't been added.")
-          });
-    }
-
     return (
     <>
-    <button className="btn-add-match" onClick={showEdit}>Add new match</button>
     {edit ? (
     <form onSubmit={handleSubmit(onSubmit)}>
         <div className="matches-it">
@@ -108,7 +105,7 @@ const AddMatch = ({updatePopUpMessage}) => {
             {teams ? (teams.map(team => <option value={team.id}>{team.name}</option>)):(<option/>)}
             </select>
         </div>
-        
+
         <span className="matches-it-txt"></span>
         <div className="input-match-wrap">
             <input type="date" min="1989-01-01" max="2023-06-31" className="match-input"
@@ -122,7 +119,7 @@ const AddMatch = ({updatePopUpMessage}) => {
                 required: true,
             })}/>
         </div>
-        
+
 
         <button className="btn-edit-popup" type="submit">
             <i className="fa-solid fa-check"></i>
@@ -134,4 +131,4 @@ const AddMatch = ({updatePopUpMessage}) => {
     )
 }
 
-export default AddMatch
+export default EditMatch

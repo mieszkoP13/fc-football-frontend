@@ -8,12 +8,15 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import PopUp from "../components/PopUp";
 import AddLeague from "../components/AddLeague";
 import EditLeague from "../components/EditLeague";
+import DeleteLeague from "../components/DeleteLeague";
 import "./Leagues.css";
 
 const Leagues = (props) => {
     let isLoggedIn = useLocalStorageStatus("token");
     let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
     let token = useLocalStorage("token")
+
+    const [showPopUpDelete, setShowPopUpDelete] = useState(false);
     
     const [showPopUp, setShowPopUp] = useState(false);
     const [popUpMessage, setPopUpMessage] = useState("")
@@ -21,6 +24,7 @@ const Leagues = (props) => {
     const [leagues, setLeagues] = useState([])
     const [followedLeaguesIDs, setFollowedLeaguesIDs] = useState([])
     const [editLeagueID, setEditLeagueID] = useState(-1)
+    const [deleteLeagueID, setDeleteLeagueID] = useState(-1)
 
     const showEditLeague = (e,id) => {
       e.preventDefault()
@@ -35,7 +39,7 @@ const Leagues = (props) => {
           setLeagues(res.data)
         })
         .catch((err) => console.log(err));
-    },[isLoggedIn,showPopUp,editLeagueID,followedLeaguesIDs])
+    },[isLoggedIn,showPopUp,leagues,editLeagueID,followedLeaguesIDs])
 
     useEffect(() => {
       axios
@@ -74,7 +78,6 @@ const Leagues = (props) => {
     const unfollowLeague = (e, leagueID) => {
       e.preventDefault()
       e.stopPropagation()
-      console.log(token[0])
       axios
         .delete(`https://fcfootball.azurewebsites.net/api/v1/followed-leagues/${leagueID}` ,{
           headers: {
@@ -87,18 +90,47 @@ const Leagues = (props) => {
         .catch((err) => console.log(err));
     }
 
+    const showDeleteLeague = (e,id) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDeleteLeagueID(id)
+      setShowPopUpDelete(true)
+    }
+
+    const deleteLeague = (id) => {
+      axios
+        .delete(
+          `https://fcfootball.azurewebsites.net/api/v1/leagues/${id}`)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => console.log(err));
+    };
+
     return (
     <div className="wrap-leagues">
       {isLoggedIn ? (
         <>
             <h1 className="leagues-h1">Available leagues</h1>
-            <PopUp show={showPopUp} setShow={setShowPopUp}>
+            {showPopUp ? (
+            <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
               <h1 className="leagues-popup-h1">Add League info</h1>
               <span>
                 {popUpMessage}
               </span>
-            </PopUp>
+            </PopUp>):(<></>)
+            }
             {isUserModerator ? (<AddLeague updatePopUpMessage={updatePopUpMessage}/>):(<></>)}
+
+            {showPopUpDelete ? (
+            <PopUp setShow={setShowPopUpDelete} customFunction={()=>deleteLeague(deleteLeagueID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
+              <h1 className="sign-in-err-h1">
+                Are you sure you want to delete this league?
+              </h1>
+              <span>This action is irreversible</span>
+            </PopUp>) : (<></>)
+            }
+
             {leagues.map((league, arrayID) => 
               <>
               {editLeagueID === arrayID ? (<EditLeague updatePopUpMessage={updatePopUpMessage} league={league}/>) : (
@@ -108,9 +140,15 @@ const Leagues = (props) => {
                   <span className="leagues-it-txt">{league.country}</span>
                   <div>
                     {isUserModerator ? (
+                    <>
                     <button className="btn-edit" onClick={e => showEditLeague(e, arrayID)}>
                       <i className="fa-solid fa-pen-to-square"></i>
-                    </button>):(<></>)}
+                    </button>
+                    <button className="btn-edit" onClick={e => showDeleteLeague(e, league.id)}>
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    </>
+                    ):(<></>)}
 
                     {!followedLeaguesIDs.includes(league.id) ?
                     (<button className="btn-follow" onClick={e => followLeague(e, league.id)}>

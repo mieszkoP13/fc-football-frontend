@@ -7,7 +7,7 @@ import useUserRoleStatus from "../hooks/useUserRoleStatus";
 import useLocalStorage from "../hooks/useLocalStorage";
 import PopUp from "../components/PopUp";
 import AddMatch from "../components/AddMatch";
-import EditLeague from "../components/EditLeague";
+import EditMatch from "../components/EditMatch";
 import "./Matches.css";
 
 const Matches = (props) => {
@@ -47,16 +47,18 @@ const Matches = (props) => {
       {isLoggedIn ? (
         <>
             <h1 className="matches-h1">Available Matches</h1>
-            <PopUp show={showPopUp} setShow={setShowPopUp}>
+            {showPopUp ? (
+            <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
               <h1 className="matches-popup-h1">Add Match info</h1>
               <span>
                 {popUpMessage}
               </span>
-            </PopUp>
+            </PopUp>):(<></>)
+            }
             {isUserModerator ? (<AddMatch updatePopUpMessage={updatePopUpMessage}/>):(<></>)}
             {matches.map((match, arrayID) => 
               <>
-              {editMatchID === arrayID ? (<EditLeague updatePopUpMessage={updatePopUpMessage} league={match}/>) : (
+              {editMatchID === arrayID ? (<EditMatch updatePopUpMessage={updatePopUpMessage} match={match}/>) : (
                 <div className="matches-it">
                   <span className="matches-it-txt"></span>
                   <span className="matches-it-txt">{match.league.name}</span>
@@ -67,10 +69,10 @@ const Matches = (props) => {
                   <span className="matches-it-txt"></span>
                   <span className="matches-it-txt">{match.date}  {match.time}</span>
                   <span className="matches-it-txt"></span>
-                    {/* {isUserModerator ? (
-                    <button className="btn-edit" onClick={e => showEditMatch(e, arrayID)}>
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </button>):(<></>)} */}
+                  {isUserModerator ? (
+                  <button className="btn-edit" onClick={e => showEditMatch(e, arrayID)}>
+                    <i className="fa-solid fa-pen-to-square"></i>
+                  </button>):(<></>)}
                 </div>
               )}
               </>

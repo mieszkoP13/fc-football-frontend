@@ -80,6 +80,10 @@
     color: var(--black);
 }
 
+.delete-league-h1 {
+    margin-bottom: 20px;
+}
+
 .input-league-wrap {
     display: inline-flex;
     flex-direction: column;

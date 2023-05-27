@@ -22,7 +22,7 @@
 
 .popup {
     overflow: hidden;
-    height: 200px;
+    height: auto;
     width: 400px;
     display: block;
     background-color: var(--green-light);
@@ -34,3 +34,10 @@
     box-shadow: 2px -2px 6px var(--green);
     padding: 30px;
 }
+
+.button-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 60%;
+  }

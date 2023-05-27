@@ -49,12 +49,13 @@ const Teams = (props) => {
     <div className="wrap-teams">
       {isLoggedIn ? (
         <>
-          <PopUp show={showPopUp} setShow={setShowPopUp}>
+          {showPopUp ? (
+          <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
             <h1 className="teams-popup-h1">Add Team info</h1>
             <span>
               {popUpMessage}
             </span>
-          </PopUp>
+          </PopUp>):(<></>)}
           <h1 className="teams-h1">Available teams</h1>
           {isUserModerator ? (<AddTeam updatePopUpMessage={updatePopUpMessage} leagueId={leagueId}/>):(<></>)}
           {teams.map((team, arrayID) => 

@@ -80,13 +80,15 @@ const SignIn = (props) => {
       </> )
       }
       </div>
-      <PopUp show={showPopUp} setShow={setShowPopUp}>
-        <h1 className="sign-in-err-h1">Sign up error</h1>
-        <span>
-          Given Email/Password are wrong or your Email Address haven't been
-          confirmed.
-        </span>
-      </PopUp>
+      {showPopUp ? (
+        <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
+          <h1 className="sign-in-err-h1">Sign up error</h1>
+          <span>
+            Given Email/Password are wrong or your Email Address haven't been
+            confirmed.
+          </span>
+        </PopUp>):(<></>)
+      }
     </>
   );
 };

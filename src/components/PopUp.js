@@ -1,24 +1,23 @@
-import React, { useEffect } from 'react'
-import "./PopUp.css"
+import React from "react";
+import "./PopUp.css";
 
-const PopUp = props => {
-
-  useEffect(() => {
-        const clickOutside = (e) => {
-            if (!document.querySelector('.popup').contains(e.target))
-                props.setShow(false)
-        }
-        window.addEventListener('click', clickOutside);
-        return () => window.removeEventListener('click', clickOutside);
-    }, [props])
-
+const PopUp = ({children, setShow, customFunction, customFunctionBtnText, defaultBtnText}) => {
 
   return (
-    <div className={`popup ${props.show ? null : "hide"}`}>
-      {props.children}
-      <button className="btn-popup" onClick={() => props.setShow(false)}>Ok</button>
+    <div className={"popup"}>
+      {children}
+      <div className="button-div">
+        {customFunction ? (
+          <button className="btn-popup" onClick={() => { customFunction(); setShow(false); }}>
+            {customFunctionBtnText}
+          </button> ) : (<></>)
+        }
+        <button className="btn-popup" onClick={() => setShow(false)}>
+          {defaultBtnText}
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default PopUp
+export default PopUp;
