@@ -21,6 +21,7 @@ const RouteSwitch = () => {
         <Route path="/FollowedLeagues" element={<FollowedLeagues />} />
         <Route path="/FollowedLeagues/:leagueName/:season/Teams" element={<Teams />} />
         <Route path="/Matches" element={<Matches />} />
+        <Route path="/Matches/:pageNo" element={<Matches />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/SignIn" element={<SignIn/>} />
         <Route path="/users/profile" element={<Profile />} />

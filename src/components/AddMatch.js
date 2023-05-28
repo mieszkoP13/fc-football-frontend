@@ -111,17 +111,18 @@ const AddMatch = ({updatePopUpMessage}) => {
         
         <span className="matches-it-txt"></span>
         <div className="input-match-wrap">
-            <input type="date" min="1989-01-01" max="2023-06-31" className="match-input"
+            <input type="date" min="1989-01-01" max="2023-06-31" className="match-input-date"
             {...register("date", {
                 required: true,
             })}/>
         </div>
         <div className="input-match-wrap">
-            <input type="time" className="match-input"
+            <input type="time" className="match-input-time"
             {...register("time", {
                 required: true,
             })}/>
         </div>
+
         
 
         <button className="btn-edit-popup" type="submit">
