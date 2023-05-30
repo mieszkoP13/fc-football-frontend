@@ -86,7 +86,7 @@ const AddMatch = ({updatePopUpMessage}) => {
                 {...register("homeTeamScore", {
                     required: true,
                 })}>
-                {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(score => <option value={score}>{score}</option>)}
+                {[...Array(15).keys()].map(score => <option value={score}>{score}</option>)}
                 </select>
             </div>
             :
@@ -95,7 +95,7 @@ const AddMatch = ({updatePopUpMessage}) => {
                 {...register("awayTeamScore", {
                     required: true,
                 })}>
-                {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(score => <option value={score}>{score}</option>)}
+                {[...Array(15).keys()].map(score => <option value={score}>{score}</option>)}
                 </select>
             </div>
         </span>

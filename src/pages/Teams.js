@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useLocation, Link, useParams } from "react-router-dom";
 import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
 import useLocalStorage from "../hooks/useLocalStorage";
 import '@fortawesome/fontawesome-free/css/all.min.css'
@@ -102,7 +101,7 @@ const Teams = (props) => {
           {teams.map((team, arrayID) => 
           <>
             {editTeamID === arrayID ? (<EditTeam updatePopUpMessage={updatePopUpMessage} leagueId={leagueId} team={team}/>) : (
-            <div className="teams-it">
+            <Link className="teams-it" to={encodeURIComponent(team.name) + "/Players"} state={ team.id } >
               <span className="teams-it-txt">{team.name}</span>
               {isUserModerator ? (
               <div>
@@ -113,7 +112,7 @@ const Teams = (props) => {
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>):(<></>)}
-            </div>)
+            </Link>)
             }
           </>
           )}

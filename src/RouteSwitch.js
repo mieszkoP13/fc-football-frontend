@@ -9,6 +9,7 @@ import Leagues from "./pages/Leagues";
 import FollowedLeagues from "./pages/FollowedLeagues";
 import Teams from "./pages/Teams";
 import Matches from "./pages/Matches";
+import Players from "./pages/Players";
 
 const RouteSwitch = () => {
   return (
@@ -18,6 +19,7 @@ const RouteSwitch = () => {
         <Route path="/" element={<Home />} />
         <Route path="/Leagues" element={<Leagues />} />
         <Route path="/Leagues/:leagueName/:season/Teams" element={<Teams />} />
+        <Route path="/Leagues/:leagueName/:season/Teams/:teamName/Players" element={<Players />} />
         <Route path="/FollowedLeagues" element={<FollowedLeagues />} />
         <Route path="/FollowedLeagues/:leagueName/:season/Teams" element={<Teams />} />
         <Route path="/Matches" element={<Matches />} />
