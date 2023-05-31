@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
+import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
 import axios from "axios";
-import "./AddPlayer.css"
+import "./EditPlayer.css"
 const RE_NAME = /^\S.{3,20}$/;
 const POSITIONS =["GK","CB","LB","RB","CM","CDM","LW","RW","ST"]
 
-const AddPlayer = ({updatePopUpMessage, teamId}) => {
+const EditPlayer = ({updatePopUpMessage,player}) => {
+    let isLoggedIn = useLocalStorageStatus("token");
 
-    const [edit, setEdit] = useState(false)
-    const showEdit = () => setEdit(true)
+    const [edit, setEdit] = useState(true)
     const hideEdit = () => setEdit(false)
 
     const {
@@ -16,7 +17,7 @@ const AddPlayer = ({updatePopUpMessage, teamId}) => {
         formState: { errors },
         handleSubmit,
         reset,
-      } = useForm();
+    } = useForm({defaultValues: {firstName: player.firstName, lastName: player.lastName, position: player.position, height: player.height, weight: player.weight, start: player.start, ends: player.ends}});
 
     const onSubmit = (data) => {
         hideEdit()
@@ -26,20 +27,12 @@ const AddPlayer = ({updatePopUpMessage, teamId}) => {
         data.strongerFeet = true
 
         axios
-          .post("https://fcfootball.azurewebsites.net/api/v1/players",data)
+          .put(`https://fcfootball.azurewebsites.net/api/v1/players/${player.id}`,data)
           .then((res) => {
-            axios
-            .post("https://fcfootball.azurewebsites.net/api/v1/contracts",{"playerId": res.data.id,"teamId":teamId,"start": data.start,"ends": data.ends})
-            .then((res) => {
-                updatePopUpMessage("Success. Player has been added.")
-            })
-            .catch((err) => {
-                updatePopUpMessage("Error. Player hasn't been added.")
-            });
-            
+            updatePopUpMessage("Success. Player has been edited.")
           })
           .catch((err) => {
-            updatePopUpMessage("Error. Player hasn't been added.")
+            updatePopUpMessage("Error. Player hasn't been edited.")
           });
     }
 
@@ -47,7 +40,6 @@ const AddPlayer = ({updatePopUpMessage, teamId}) => {
 
     return (
     <>
-    <button className="btn-add-player" onClick={showEdit}>Add new player</button>
     {edit ? (
     <form onSubmit={handleSubmit(onSubmit)}>
     <div className="players-it">
@@ -136,4 +128,4 @@ const AddPlayer = ({updatePopUpMessage, teamId}) => {
     )
 }
 
-export default AddPlayer
+export default EditPlayer

@@ -5,7 +5,7 @@ import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
 import useLocalStorage from "../hooks/useLocalStorage";
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import AddPlayer from "../components/AddPlayer";
-import EditTeam from "../components/EditTeam";
+import EditPlayer from "../components/EditPlayer";
 import PopUp from "../components/PopUp";
 import axios from "axios";
 import "./Players.css";
@@ -44,11 +44,11 @@ const Players = (props) => {
       setEditPlayerID(-1)
     }
 
-    // const showEditTeam = (e,id) => {
-    //   e.preventDefault()
-    //   e.stopPropagation()
-    //   setEditTeamID(id)
-    // }
+    const showEditPlayer = (e,id) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setEditPlayerID(id)
+    }
 
     // const showDeleteTeam = (e,id) => {
     //   e.preventDefault()
@@ -101,28 +101,28 @@ const Players = (props) => {
 
           {players.map((player, arrayID) => 
           <>
-            {/* {editTeamID === arrayID ? (<EditTeam updatePopUpMessage={updatePopUpMessage} leagueId={leagueId} team={team}/>) : ( */}
+            {editPlayerID === arrayID ? (<EditPlayer updatePopUpMessage={updatePopUpMessage} player={player}/>) : (
             <div className="players-it">
               <span className="players-it-txt">{player.firstName} {player.lastName}</span>
               <span className="players-it-txt">{player.position}</span>
               <span className="players-it-txt">{player.height}cm {player.weight}kg</span>
-              <span className="players-it-txt"></span>
-              <span className="players-it-txt"></span>
-              <span className="players-it-txt">Born: {player.birthDate}</span>
               <span className="players-it-txt">Contracted</span>
               <span className="players-it-txt">From: {player.teamsHistory[0].start}</span>
               <span className="players-it-txt">To: {player.teamsHistory[0].ends}</span>
-              {/* {isUserModerator ? (
+              <span className="players-it-txt">Born: {player.birthDate}</span>
+              <span className="players-it-txt"></span>
+              
+              {isUserModerator ? (
               <div>
-                <button className="btn-edit" onClick={e => showEditTeam(e, arrayID)}>
+                <button className="btn-edit" onClick={e => showEditPlayer(e, arrayID)}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </button>
-                <button className="btn-edit" onClick={e => showDeleteTeam(e, team.id)}>
+                {/* <button className="btn-edit" onClick={e => showDeleteTeam(e, team.id)}>
                   <i class="fa-solid fa-trash-can"></i>
-                </button>
-              </div>):(<></>)} */}
+                </button> */}
+              </div>):(<></>)}
             </div>
-            {/* )} */}
+            )}
           </>
           )}
         </>
