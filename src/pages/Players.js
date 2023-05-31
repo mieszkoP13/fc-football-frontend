@@ -50,31 +50,31 @@ const Players = (props) => {
       setEditPlayerID(id)
     }
 
-    // const showDeleteTeam = (e,id) => {
-    //   e.preventDefault()
-    //   e.stopPropagation()
-    //   setDeleteTeamID(id)
-    //   setShowPopUpDelete(true)
-    // }
+    const showDeletePlayer = (e,id) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDeletePlayerID(id)
+      setShowPopUpDelete(true)
+    }
 
-    // const deleteTeam = (id) => {
-    //   axios
-    //     .delete(
-    //       `https://fcfootball.azurewebsites.net/api/v1/teams/${id}`,
-    //       {
-    //         headers: {
-    //           Authorization: `Bearer ${token[0]}`,
-    //         },
-    //       })
-    //     .then((res) => {
-    //       console.log(res)
-    //       setDeleteTeamID(-1)
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //       setDeleteTeamID(-1)
-    //     });
-    // };
+    const deletePlayer = (id) => {
+      axios
+        .delete(
+          `https://fcfootball.azurewebsites.net/api/v1/players/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token[0]}`,
+            },
+          })
+        .then((res) => {
+          console.log(res)
+          setDeletePlayerID(-1)
+        })
+        .catch((err) => {
+          console.log(err)
+          setDeletePlayerID(-1)
+        });
+    };
 
     return (
     <div className="wrap-teams">
@@ -90,14 +90,14 @@ const Players = (props) => {
           </PopUp>):(<></>)}
           {isUserModerator ? (<AddPlayer updatePopUpMessage={updatePopUpMessage} teamId={teamId}/>):(<></>)}
 
-          {/* {showPopUpDelete ? (
-            <PopUp setShow={setShowPopUpDelete} customFunction={()=>deleteTeam(deleteTeamID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
+          {showPopUpDelete ? (
+            <PopUp setShow={setShowPopUpDelete} customFunction={()=>deletePlayer(deletePlayerID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
               <h1 className="sign-in-err-h1">
-                Are you sure you want to delete this team?
+                Are you sure you want to delete this player?
               </h1>
               <span>This action is irreversible</span>
             </PopUp>) : (<></>)
-          } */}
+          }
 
           {players.map((player, arrayID) => 
           <>
@@ -117,9 +117,9 @@ const Players = (props) => {
                 <button className="btn-edit" onClick={e => showEditPlayer(e, arrayID)}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </button>
-                {/* <button className="btn-edit" onClick={e => showDeleteTeam(e, team.id)}>
+                <button className="btn-edit" onClick={e => showDeletePlayer(e, player.id)}>
                   <i class="fa-solid fa-trash-can"></i>
-                </button> */}
+                </button>
               </div>):(<></>)}
             </div>
             )}
