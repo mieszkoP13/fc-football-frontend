@@ -67,11 +67,9 @@ const Players = (props) => {
             },
           })
         .then((res) => {
-          console.log(res)
           setDeletePlayerID(-1)
         })
         .catch((err) => {
-          console.log(err)
           setDeletePlayerID(-1)
         });
     };

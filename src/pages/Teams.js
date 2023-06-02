@@ -66,11 +66,9 @@ const Teams = (props) => {
             },
           })
         .then((res) => {
-          console.log(res)
           setDeleteTeamID(-1)
         })
         .catch((err) => {
-          console.log(err)
           setDeleteTeamID(-1)
         });
     };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "./Profile.css";
 import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
@@ -114,14 +114,6 @@ const Profile = () => {
                 </>
               )}
             </div>
-            <div className="profile-it">
-              <span className="profile-it-txt">Date of Birth</span>
-              <span className="profile-it-txt">...</span>
-            </div>
-            <div className="profile-it">
-              <span className="profile-it-txt">Time of Birth</span>
-              <span className="profile-it-txt">...</span>
-            </div>
             <div className="btns-profile">
               <button className="btn-log-out" onClick={logOut}>
                 Log out
@@ -131,7 +123,17 @@ const Profile = () => {
           </div>
         </>
       ) : (
-        <span>You've been logged out successfully</span>
+        <div className="log-out-wrap">
+          <span className="profile-span">You've been logged out, sign in again or sign up for free!</span>
+          <div className="btns-profile">
+            <Link className="btn-log-out" to="/SignIn">
+              Sign in
+            </Link>
+            <Link className="btn-log-out" to="/SignUp">
+              Sign up
+            </Link>
+          </div>
+        </div>
       )}
     </div>
   );

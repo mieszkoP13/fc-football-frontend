@@ -101,11 +101,9 @@ const Leagues = (props) => {
         .delete(
           `https://fcfootball.azurewebsites.net/api/v1/leagues/${id}`)
         .then((res) => {
-          console.log(res)
           setDeleteLeagueID(-1)
         })
         .catch((err) => {
-          console.log(err)
           setDeleteLeagueID(-1)
         });
     };

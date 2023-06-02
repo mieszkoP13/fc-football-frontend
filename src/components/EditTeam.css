@@ -1,5 +1,5 @@
 .leagues-it {
-    box-shadow: 1px 2px 3px black;
+    box-shadow: 1px 2px 3px var(--green);
     background-color: var(--green-lighter);
     border-radius: 8px;
     display: flex;
