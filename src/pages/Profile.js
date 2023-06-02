@@ -49,13 +49,15 @@ const Profile = () => {
     setProfile(null);
     window.location.reload();
   };
-  useEffect(() => {}, [isLoggedIn,navigate]);
 
   return (
     <div className="wrap-profile">
       {profile ? (
         <>
-          <div className="left-panel"></div>
+          <div className="left-panel">
+            <div className="photo-panel"></div>
+            <div></div>
+          </div>
           <div className="right-panel">
             <h1 className="profile-h1">Profile information and settings</h1>
             <div className="profile-it">

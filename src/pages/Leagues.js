@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import axios from "axios";
-import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
+import useLoginStatus from "../hooks/useLoginStatus";
 import useUserRoleStatus from "../hooks/useUserRoleStatus";
 import useLocalStorage from "../hooks/useLocalStorage";
 import PopUp from "../components/PopUp";
@@ -11,165 +11,165 @@ import EditLeague from "../components/EditLeague";
 import "./Leagues.css";
 
 const Leagues = (props) => {
-    let isLoggedIn = useLocalStorageStatus("token");
-    let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
-    let token = useLocalStorage("token")
+  let isLoggedIn = useLoginStatus()
+  let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
+  let token = useLocalStorage("token")
 
-    const [showPopUpDelete, setShowPopUpDelete] = useState(false);
-    
-    const [showPopUp, setShowPopUp] = useState(false);
-    const [popUpMessage, setPopUpMessage] = useState("")
+  const [showPopUpDelete, setShowPopUpDelete] = useState(false);
   
-    const [leagues, setLeagues] = useState([])
-    const [followedLeaguesIDs, setFollowedLeaguesIDs] = useState([])
-    const [editLeagueID, setEditLeagueID] = useState(-1)
-    const [deleteLeagueID, setDeleteLeagueID] = useState(-1)
+  const [showPopUp, setShowPopUp] = useState(false);
+  const [popUpMessage, setPopUpMessage] = useState("")
 
-    useEffect(() => {
-      axios
-        .get("https://fcfootball.azurewebsites.net/api/v1/leagues")
-        .then((res) => {
-          setLeagues(res.data)
-        })
-        .catch((err) => console.log(err));
-    },[isLoggedIn,showPopUp,editLeagueID,deleteLeagueID,followedLeaguesIDs])
+  const [leagues, setLeagues] = useState([])
+  const [followedLeaguesIDs, setFollowedLeaguesIDs] = useState([])
+  const [editLeagueID, setEditLeagueID] = useState(-1)
+  const [deleteLeagueID, setDeleteLeagueID] = useState(-1)
 
-    useEffect(() => {
-      axios
-        .get("https://fcfootball.azurewebsites.net/api/v1/followed-leagues",{
-          headers: {
-            Authorization: `Bearer ${token[0]}`,
-          },
-        })
-        .then((res) => {
-          setFollowedLeaguesIDs(res.data)
-        })
-        .catch((err) => console.log(err));
-    },[])
+  useEffect(() => {
+    axios
+      .get("https://fcfootball.azurewebsites.net/api/v1/leagues")
+      .then((res) => {
+        setLeagues(res.data)
+      })
+      .catch((err) => console.log(err));
+  },[isLoggedIn,showPopUp,editLeagueID,deleteLeagueID,followedLeaguesIDs])
 
-    const showEditLeague = (e,id) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setEditLeagueID(id)
-    }
+  useEffect(() => {
+    axios
+      .get("https://fcfootball.azurewebsites.net/api/v1/followed-leagues",{
+        headers: {
+          Authorization: `Bearer ${token[0]}`,
+        },
+      })
+      .then((res) => {
+        setFollowedLeaguesIDs(res.data)
+      })
+      .catch((err) => console.log(err));
+  },[])
 
-    const showDeleteLeague = (e,id) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setDeleteLeagueID(id)
-      setShowPopUpDelete(true)
-    }
+  const showEditLeague = (e,id) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setEditLeagueID(id)
+  }
 
-    const updatePopUpMessage = (popUpMsg) => {
-      setPopUpMessage(popUpMsg)
-      setShowPopUp(true);
-      setEditLeagueID(-1)
-    }
+  const showDeleteLeague = (e,id) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDeleteLeagueID(id)
+    setShowPopUpDelete(true)
+  }
 
-    const followLeague = (e, leagueID) => {
-      e.preventDefault()
-      e.stopPropagation()
-      axios
-        .put(`https://fcfootball.azurewebsites.net/api/v1/followed-leagues/${leagueID}`, {} ,{
-          headers: {
-            Authorization: `Bearer ${token[0]}`,
-          },
-        })
-        .then((res) => {
-          setFollowedLeaguesIDs(followedLeaguesIDs => [...followedLeaguesIDs, leagueID])
-        })
-        .catch((err) => console.log(err));
-    }
+  const updatePopUpMessage = (popUpMsg) => {
+    setPopUpMessage(popUpMsg)
+    setShowPopUp(true);
+    setEditLeagueID(-1)
+  }
 
-    const unfollowLeague = (e, leagueID) => {
-      e.preventDefault()
-      e.stopPropagation()
-      axios
-        .delete(`https://fcfootball.azurewebsites.net/api/v1/followed-leagues/${leagueID}` ,{
-          headers: {
-            Authorization: `Bearer ${token[0]}`,
-          },
-        })
-        .then((res) => {
-          setFollowedLeaguesIDs(followedLeaguesIDs.filter(id => id !== leagueID))
-        })
-        .catch((err) => console.log(err));
-    }
+  const followLeague = (e, leagueID) => {
+    e.preventDefault()
+    e.stopPropagation()
+    axios
+      .put(`https://fcfootball.azurewebsites.net/api/v1/followed-leagues/${leagueID}`, {} ,{
+        headers: {
+          Authorization: `Bearer ${token[0]}`,
+        },
+      })
+      .then((res) => {
+        setFollowedLeaguesIDs(followedLeaguesIDs => [...followedLeaguesIDs, leagueID])
+      })
+      .catch((err) => console.log(err));
+  }
 
-    const deleteLeague = (id) => {
-      axios
-        .delete(
-          `https://fcfootball.azurewebsites.net/api/v1/leagues/${id}`)
-        .then((res) => {
-          setDeleteLeagueID(-1)
-        })
-        .catch((err) => {
-          setDeleteLeagueID(-1)
-        });
-    };
+  const unfollowLeague = (e, leagueID) => {
+    e.preventDefault()
+    e.stopPropagation()
+    axios
+      .delete(`https://fcfootball.azurewebsites.net/api/v1/followed-leagues/${leagueID}` ,{
+        headers: {
+          Authorization: `Bearer ${token[0]}`,
+        },
+      })
+      .then((res) => {
+        setFollowedLeaguesIDs(followedLeaguesIDs.filter(id => id !== leagueID))
+      })
+      .catch((err) => console.log(err));
+  }
 
-    return (
-    <div className="wrap-leagues">
-      {isLoggedIn ? (
-        <>
-            <h1 className="leagues-h1">Available leagues</h1>
-            {showPopUp ? (
-            <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
-              <h1 className="leagues-popup-h1">Add League info</h1>
-              <span>
-                {popUpMessage}
-              </span>
-            </PopUp>):(<></>)
-            }
-            {isUserModerator ? (<AddLeague updatePopUpMessage={updatePopUpMessage}/>):(<></>)}
+  const deleteLeague = (id) => {
+    axios
+      .delete(
+        `https://fcfootball.azurewebsites.net/api/v1/leagues/${id}`)
+      .then((res) => {
+        setDeleteLeagueID(-1)
+      })
+      .catch((err) => {
+        setDeleteLeagueID(-1)
+      });
+  };
 
-            {showPopUpDelete ? (
-            <PopUp setShow={setShowPopUpDelete} customFunction={()=>deleteLeague(deleteLeagueID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
-              <h1 className="sign-in-err-h1">
-                Are you sure you want to delete this league?
-              </h1>
-              <span>This action is irreversible</span>
-            </PopUp>) : (<></>)
-            }
+  return (
+  <div className="wrap-leagues">
+    {isLoggedIn ? (
+      <>
+          <h1 className="leagues-h1">Available leagues</h1>
+          {showPopUp ? (
+          <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
+            <h1 className="leagues-popup-h1">Add League info</h1>
+            <span>
+              {popUpMessage}
+            </span>
+          </PopUp>):(<></>)
+          }
+          {isUserModerator ? (<AddLeague updatePopUpMessage={updatePopUpMessage}/>):(<></>)}
 
-            {leagues.map((league, arrayID) => 
-              <>
-              {editLeagueID === arrayID ? (<EditLeague updatePopUpMessage={updatePopUpMessage} league={league}/>) : (
-                <Link className="leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.id } >
-                  <span className="leagues-it-txt">{league.name}</span>
-                  <span className="leagues-it-txt">{league.season}</span>
-                  <span className="leagues-it-txt">{league.country}</span>
-                  <div>
-                    {isUserModerator ? (
-                    <>
-                    <button className="btn-edit" onClick={e => showEditLeague(e, arrayID)}>
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    <button className="btn-edit" onClick={e => showDeleteLeague(e, league.id)}>
-                      <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                    </>
-                    ):(<></>)}
+          {showPopUpDelete ? (
+          <PopUp setShow={setShowPopUpDelete} customFunction={()=>deleteLeague(deleteLeagueID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
+            <h1 className="sign-in-err-h1">
+              Are you sure you want to delete this league?
+            </h1>
+            <span>This action is irreversible</span>
+          </PopUp>) : (<></>)
+          }
 
-                    {!followedLeaguesIDs.includes(league.id) ?
-                    (<button className="btn-follow" onClick={e => followLeague(e, league.id)}>
-                      <i className="fa-solid fa-thumbs-up"></i>
-                    </button>):(
-                    <button className="btn-follow" onClick={e => unfollowLeague(e, league.id)}>
-                      <i className="fa-solid fa-thumbs-down"></i>
-                    </button>)
-                    }
-                  </div>
-              </Link>
-              )}
-              </>
+          {leagues.map((league, arrayID) => 
+            <>
+            {editLeagueID === arrayID ? (<EditLeague updatePopUpMessage={updatePopUpMessage} league={league}/>) : (
+              <Link className="leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.id } >
+                <span className="leagues-it-txt">{league.name}</span>
+                <span className="leagues-it-txt">{league.season}</span>
+                <span className="leagues-it-txt">{league.country}</span>
+                <div>
+                  {isUserModerator ? (
+                  <>
+                  <button className="btn-edit" onClick={e => showEditLeague(e, arrayID)}>
+                    <i className="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button className="btn-edit" onClick={e => showDeleteLeague(e, league.id)}>
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                  </>
+                  ):(<></>)}
+
+                  {!followedLeaguesIDs.includes(league.id) ?
+                  (<button className="btn-follow" onClick={e => followLeague(e, league.id)}>
+                    <i className="fa-solid fa-thumbs-up"></i>
+                  </button>):(
+                  <button className="btn-follow" onClick={e => unfollowLeague(e, league.id)}>
+                    <i className="fa-solid fa-thumbs-down"></i>
+                  </button>)
+                  }
+                </div>
+            </Link>
             )}
-        </>
-      ) : (
-        <span>Content unavailable, log in to grant access.</span>
-      )}
-    </div>
-    );
+            </>
+          )}
+      </>
+    ) : (
+      <span>Content unavailable, log in to grant access.</span>
+    )}
+  </div>
+  );
 };
 
 export default Leagues;

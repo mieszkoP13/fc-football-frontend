@@ -14,9 +14,19 @@
 }
 
 .left-panel {
-    background-color: blueviolet;
     width: 30%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.photo-panel {
+    margin-top: 16%;
+    height: 50%;
+    background-image: url(michal_g.png);
+    background-size: cover;
+    object-fit: cover;
+    border-radius: 100px;
 }
 
 .right-panel {
