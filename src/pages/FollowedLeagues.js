@@ -38,20 +38,20 @@ const FollowedLeagues = (props) => {
   },[])
 
   return (
-  <div className="wrap-leagues">
+  <div className="wrap-followed-leagues">
     {isLoggedIn ? (
       <>
-          <h1 className="leagues-h1">Available leagues</h1>
+          <h1 className="followed-leagues-h1">Available leagues</h1>
           {leagues.map(league => 
-            <Link className="leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.id } >
-              <span className="leagues-it-txt">{league.name}</span>
-              <span className="leagues-it-txt">{league.season}</span>
-              <span className="leagues-it-txt">{league.country}</span>
+            <Link className="followed-leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.id } >
+              <span className="followed-leagues-it-txt">{league.name}</span>
+              <span className="followed-leagues-it-txt">{league.season}</span>
+              <span className="followed-leagues-it-txt">{league.country}</span>
             </Link>
           )}
       </>
     ) : (
-      <span>Content unavailable, log in to grant access.</span>
+      <span className="profile-span">You've been logged out, sign in again or sign up for free!</span>
     )}
   </div>
   );

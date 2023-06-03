@@ -76,7 +76,7 @@ const Players = (props) => {
 
   return (
   <div className="wrap-teams">
-    {isLoggedIn ? (
+    {isUserModerator && isLoggedIn ? (
       <>
         <h1 className="teams-h1">Available players</h1>
         {showPopUp ? (
@@ -86,7 +86,7 @@ const Players = (props) => {
             {popUpMessage}
           </span>
         </PopUp>):(<></>)}
-        {isUserModerator ? (<AddPlayer updatePopUpMessage={updatePopUpMessage} teamId={teamId}/>):(<></>)}
+        <AddPlayer updatePopUpMessage={updatePopUpMessage} teamId={teamId}/>
 
         {showPopUpDelete ? (
           <PopUp setShow={setShowPopUpDelete} customFunction={()=>deletePlayer(deletePlayerID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
@@ -110,7 +110,6 @@ const Players = (props) => {
             <span className="players-it-txt">Born: {player.birthDate}</span>
             <span className="players-it-txt"></span>
             
-            {isUserModerator ? (
             <div>
               <button className="btn-edit" onClick={e => showEditPlayer(e, arrayID)}>
                 <i className="fa-solid fa-pen-to-square"></i>
@@ -118,14 +117,14 @@ const Players = (props) => {
               <button className="btn-edit" onClick={e => showDeletePlayer(e, player.id)}>
                 <i class="fa-solid fa-trash-can"></i>
               </button>
-            </div>):(<></>)}
+            </div>
           </div>
           )}
         </>
         )}
       </>
     ) : (
-      <span>Content unavailable, log in to grant access.</span>
+      <span className="profile-span">You've been logged out or you don't have sufficient permission to view this tab, sign in again or sign up for free!</span>
     )}
   </div>
   );

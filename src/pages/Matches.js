@@ -74,7 +74,7 @@ const Matches = (props) => {
 
   return (
   <div className="wrap-matches">
-    {isLoggedIn ? (
+    {isUserModerator && isLoggedIn ? (
       <>
         <div className="page-nav">
           {pageNo > 0 ? (<Link className="prev-match" to={'/Matches/' + encodeURIComponent( parseInt(pageNo)-1 )}>
@@ -96,7 +96,7 @@ const Matches = (props) => {
           </span>
         </PopUp>):(<></>)
         }
-        {isUserModerator ? (<AddMatch updatePopUpMessage={updatePopUpMessage}/>):(<></>)}
+        <AddMatch updatePopUpMessage={updatePopUpMessage}/>
 
         {showPopUpDelete ? (
         <PopUp setShow={setShowPopUpDelete} customFunction={()=>deleteMatch(deleteMatchID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
@@ -119,7 +119,7 @@ const Matches = (props) => {
               <span className="matches-it-txt">{match.awayTeam.name}</span>
               <span className="matches-it-txt"></span>
               <span className="matches-it-txt">{match.date}    {match.time}</span>
-              {isUserModerator ? (
+              
               <div className="matches-it-txt">
                 <button className="btn-edit matches-it-txt" onClick={e => showEditMatch(e, arrayID)}>
                   <i className="fa-solid fa-pen-to-square"></i>
@@ -127,14 +127,14 @@ const Matches = (props) => {
                 <button className="btn-edit" onClick={e => showDeleteMatch(e, match.id)}>
                 <i class="fa-solid fa-trash-can"></i>
                 </button>
-              </div>):(<></>)}
+              </div>
             </div>
           )}
           </>
         )}
       </>
     ) : (
-      <span>Content unavailable, log in to grant access.</span>
+      <span className="profile-span">You've been logged out or you don't have sufficient permission to view this tab, sign in again or sign up for free!</span>
     )}
   </div>
   );

@@ -126,7 +126,7 @@ const Profile = () => {
         </>
       ) : (
         <div className="log-out-wrap">
-          <span className="profile-span">You've been logged out, sign in again or sign up for free!</span>
+          <span className="profile-span">You've been logged out or you don't have sufficient permission to view this tab, sign in again or sign up for free!</span>
           <div className="btns-profile">
             <Link className="btn-log-out" to="/SignIn">
               Sign in

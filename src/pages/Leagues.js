@@ -110,7 +110,7 @@ const Leagues = (props) => {
 
   return (
   <div className="wrap-leagues">
-    {isLoggedIn ? (
+    {isUserModerator && isLoggedIn ? (
       <>
           <h1 className="leagues-h1">Available leagues</h1>
           {showPopUp ? (
@@ -121,7 +121,7 @@ const Leagues = (props) => {
             </span>
           </PopUp>):(<></>)
           }
-          {isUserModerator ? (<AddLeague updatePopUpMessage={updatePopUpMessage}/>):(<></>)}
+          <AddLeague updatePopUpMessage={updatePopUpMessage}/>
 
           {showPopUpDelete ? (
           <PopUp setShow={setShowPopUpDelete} customFunction={()=>deleteLeague(deleteLeagueID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
@@ -140,25 +140,22 @@ const Leagues = (props) => {
                 <span className="leagues-it-txt">{league.season}</span>
                 <span className="leagues-it-txt">{league.country}</span>
                 <div>
-                  {isUserModerator ? (
-                  <>
-                  <button className="btn-edit" onClick={e => showEditLeague(e, arrayID)}>
-                    <i className="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button className="btn-edit" onClick={e => showDeleteLeague(e, league.id)}>
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                  </>
-                  ):(<></>)}
-
-                  {!followedLeaguesIDs.includes(league.id) ?
-                  (<button className="btn-follow" onClick={e => followLeague(e, league.id)}>
-                    <i className="fa-solid fa-thumbs-up"></i>
-                  </button>):(
-                  <button className="btn-follow" onClick={e => unfollowLeague(e, league.id)}>
-                    <i className="fa-solid fa-thumbs-down"></i>
-                  </button>)
-                  }
+                  
+                <button className="btn-edit" onClick={e => showEditLeague(e, arrayID)}>
+                  <i className="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button className="btn-edit" onClick={e => showDeleteLeague(e, league.id)}>
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+                
+                {!followedLeaguesIDs.includes(league.id) ?
+                (<button className="btn-follow" onClick={e => followLeague(e, league.id)}>
+                  <i className="fa-solid fa-thumbs-up"></i>
+                </button>):(
+                <button className="btn-follow" onClick={e => unfollowLeague(e, league.id)}>
+                  <i className="fa-solid fa-thumbs-down"></i>
+                </button>)
+                }
                 </div>
             </Link>
             )}
@@ -166,7 +163,7 @@ const Leagues = (props) => {
           )}
       </>
     ) : (
-      <span>Content unavailable, log in to grant access.</span>
+      <span className="profile-span">You've been logged out or you don't have sufficient permission to view this tab, sign in again or sign up for free!</span>
     )}
   </div>
   );

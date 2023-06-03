@@ -6,11 +6,10 @@ const useLoginStatus = () => {
   const [status, setStatus] = useState(false);
   useEffect(() => {
     const getLoginStatus = () => {
-      if (localStorage.getItem("token").match(RE_JWT)) setStatus(true);
+      if (localStorage.getItem("token")?.match(RE_JWT)) setStatus(true);
       else setStatus(false);
     };
     getLoginStatus();
-    console.log(status)
   });
   return status;
 };

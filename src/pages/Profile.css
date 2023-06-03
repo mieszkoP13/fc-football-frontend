@@ -45,7 +45,7 @@
 
 .profile-span {
     color: var(--white);
-    font-size: 31px;
+    font-size: 28px;
     text-align: center;
 }
 
@@ -114,4 +114,21 @@
     align-content: center;
     display: flex;
     flex-direction: column;
+}
+
+@media only screen and (max-height: 780px) {
+    .wrap-profile {
+        height: 600px;
+        width: 900px;
+        display: inline-flex;
+        background-color: var(--green-light);
+        position: absolute;
+        left: 50%;
+        top: 400px;
+        margin: -300px 0 0 -450px;
+        box-shadow: 2px -2px 6px var(--green);
+        padding: 30px;
+        border-radius: 10px;
+        flex-direction: row;
+    }
 }

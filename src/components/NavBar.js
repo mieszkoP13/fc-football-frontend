@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import useLocalStorageStatus from "../hooks/useLocalStorageStatus";
+import useUserRoleStatus from "../hooks/useUserRoleStatus";
+import useLoginStatus from "../hooks/useLoginStatus";
 
 const NavBar = (props) => {
   const [isActive, setActive] = useState(false);
-  let isLoggedIn = useLocalStorageStatus("token");
+  let isLoggedIn = useLoginStatus()
+  let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
 
   useEffect(() => {
     window.matchMedia("(min-width: 768px)").addEventListener("change", (e) => {
@@ -29,19 +31,27 @@ const NavBar = (props) => {
           <li>
             <Link onClick={hideBurger} to="/">Home</Link>
           </li>
+          {isLoggedIn ? (
+          <>
+            {isUserModerator ? (
+            <>
+            <li>
+              <Link onClick={hideBurger} to="/Leagues">Leagues</Link>
+            </li>
+            <li>
+              <Link onClick={hideBurger} to="/Matches">Matches</Link>
+            </li>
+            </>):(<></>)}
           <li>
-            <Link onClick={hideBurger} to="/Leagues">Leagues</Link>
+            <Link onClick={hideBurger} to="/LeaguesView">Leagues View</Link>
           </li>
           <li>
             <Link onClick={hideBurger} to="/FollowedLeagues">Followed Leagues</Link>
           </li>
           <li>
-            <Link onClick={hideBurger} to="/Matches">Matches</Link>
+            <Link onClick={hideBurger} to="/users/profile">Profile</Link>
           </li>
-          {isLoggedIn ? (
-            <li>
-              <Link onClick={hideBurger} to="/users/profile">Profile</Link>
-            </li>
+          </>
           ) : (
             <>
               <li>

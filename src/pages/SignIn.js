@@ -32,6 +32,7 @@ const SignIn = (props) => {
         localStorage.setItem("roles", JSON.stringify(res.data.roles));
         localStorage.setItem("token", res.data.token);
         navigate("/users/profile");
+        window.location.reload()
       })
       .catch((err) => {
         setLoading(false);

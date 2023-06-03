@@ -11,6 +11,10 @@ import Teams from "./pages/Teams";
 import Matches from "./pages/Matches";
 import Players from "./pages/Players";
 
+import LeaguesView from "./pages-user/LeaguesView";
+import TeamsView from "./pages-user/TeamsView";
+import MatchesView from "./pages-user/MatchesView";
+
 const RouteSwitch = () => {
   return (
     <BrowserRouter>
@@ -24,6 +28,11 @@ const RouteSwitch = () => {
         <Route path="/FollowedLeagues/:leagueName/:season/Teams" element={<Teams />} />
         <Route path="/Matches" element={<Matches />} />
         <Route path="/Matches/:pageNo" element={<Matches />} />
+
+        <Route path="/LeaguesView" element={<LeaguesView />} />
+        <Route path="/LeaguesView/:leagueName/:season/TeamsView" element={<TeamsView />} />
+        <Route path="/LeaguesView/:leagueName/:season/TeamsView/:teamName/MatchesView" element={<MatchesView />} />
+
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/SignIn" element={<SignIn/>} />
         <Route path="/users/profile" element={<Profile />} />
