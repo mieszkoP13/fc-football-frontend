@@ -14,6 +14,7 @@ const Matches = (props) => {
   const { pageNo = 0 } = useParams()
   const [pageCount, setPageCount] = useState(1)
   let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
+  let isUserAdmin = useUserRoleStatus("ROLE_ADMIN")
   let isLoggedIn = useLoginStatus()
 
   const [showPopUpDelete, setShowPopUpDelete] = useState(false);
@@ -74,7 +75,7 @@ const Matches = (props) => {
 
   return (
   <div className="wrap-matches">
-    {isUserModerator && isLoggedIn ? (
+    {(isUserModerator || isUserAdmin) && isLoggedIn ? (
       <>
         <div className="page-nav">
           {pageNo > 0 ? (<Link className="prev-match" to={'/Matches/' + encodeURIComponent( parseInt(pageNo)-1 )}>

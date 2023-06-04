@@ -9,6 +9,7 @@ const NavBar = (props) => {
   const [isActive, setActive] = useState(false);
   let isLoggedIn = useLoginStatus()
   let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
+  let isUserAdmin = useUserRoleStatus("ROLE_ADMIN")
 
   useEffect(() => {
     window.matchMedia("(min-width: 768px)").addEventListener("change", (e) => {
@@ -33,7 +34,12 @@ const NavBar = (props) => {
           </li>
           {isLoggedIn ? (
           <>
-            {isUserModerator ? (
+            {isUserAdmin ? (
+            <li>
+              <Link onClick={hideBurger} to="/AdminPanel">Admin Panel</Link>
+            </li>
+            ):(<></>)}
+            {(isUserModerator || isUserAdmin) ? (
             <>
             <li>
               <Link onClick={hideBurger} to="/Leagues">Leagues</Link>

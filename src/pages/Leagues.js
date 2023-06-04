@@ -13,6 +13,7 @@ import "./Leagues.css";
 const Leagues = (props) => {
   let isLoggedIn = useLoginStatus()
   let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
+  let isUserAdmin = useUserRoleStatus("ROLE_ADMIN")
   let token = useLocalStorage("token")
 
   const [showPopUpDelete, setShowPopUpDelete] = useState(false);
@@ -110,7 +111,7 @@ const Leagues = (props) => {
 
   return (
   <div className="wrap-leagues">
-    {isUserModerator && isLoggedIn ? (
+    {(isUserModerator || isUserAdmin) && isLoggedIn ? (
       <>
           <h1 className="leagues-h1">Available leagues</h1>
           {showPopUp ? (

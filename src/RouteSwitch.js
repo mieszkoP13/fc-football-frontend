@@ -14,6 +14,7 @@ import Players from "./pages/Players";
 import LeaguesView from "./pages-user/LeaguesView";
 import TeamsView from "./pages-user/TeamsView";
 import MatchesView from "./pages-user/MatchesView";
+import AdminPanel from "./pages-admin/AdminPanel";
 
 const RouteSwitch = () => {
   return (
@@ -21,6 +22,9 @@ const RouteSwitch = () => {
       <NavBar/>
       <Routes>
         <Route path="/" element={<Home />} />
+
+        <Route path="/AdminPanel" element={<AdminPanel />} />
+
         <Route path="/Leagues" element={<Leagues />} />
         <Route path="/Leagues/:leagueName/:season/Teams" element={<Teams />} />
         <Route path="/Leagues/:leagueName/:season/Teams/:teamName/Players" element={<Players />} />

@@ -16,6 +16,7 @@ const Teams = (props) => {
   let isLoggedIn = useLoginStatus()
   let token = useLocalStorage("token")
   let isUserModerator = useUserRoleStatus("ROLE_MODERATOR")
+  let isUserAdmin = useUserRoleStatus("ROLE_ADMIN")
 
   const [showPopUpDelete, setShowPopUpDelete] = useState(false);
 
@@ -75,7 +76,7 @@ const Teams = (props) => {
 
   return (
   <div className="wrap-teams">
-    {isUserModerator && isLoggedIn ? (
+    {(isUserModerator || isUserAdmin) && isLoggedIn ? (
       <>
         <h1 className="teams-h1">Available teams</h1>
         {showPopUp ? (
