@@ -58,6 +58,10 @@ const EditMatch = ({updatePopUpMessage,match}) => {
         <div className="matches-it">
 
         <span className="matches-it-txt"></span>
+        <span className="matches-it-txt"></span>
+        <span className="matches-it-txt"></span>
+
+        <span className="matches-it-txt"></span>
         <div className="input-match-wrap">
         <select className="match-select"
             {...register("leagueId", {
@@ -106,6 +110,14 @@ const EditMatch = ({updatePopUpMessage,match}) => {
             </select>
         </div>
 
+        {match.goals?.map(goal =>
+            <>
+            <span className="matches-view-it-txt">{match.homeTeam.players.find(player => player.playerId === goal.playerId)?.lastName} {match.homeTeam.players.find(player => player.playerId === goal.playerId)?.lastName ? goal.time+'`' : null}</span>
+            <span className="matches-view-it-txt"></span>
+            <span className="matches-view-it-txt">{match.awayTeam.players.find(player => player.playerId === goal.playerId)?.lastName} {match.awayTeam.players.find(player => player.playerId === goal.playerId)?.lastName ? goal.time+'`' : null}</span>
+            </>
+        )}
+
         <span className="matches-it-txt"></span>
         <div className="input-match-wrap">
             <input type="date" min="1989-01-01" max="2023-06-31" className="match-input-date"
@@ -124,6 +136,9 @@ const EditMatch = ({updatePopUpMessage,match}) => {
         <button className="btn-edit-popup" type="submit">
             <i className="fa-solid fa-check"></i>
         </button>
+
+        <span className="matches-it-txt"></span>
+        <span className="matches-it-txt"></span>
 
         </div>
     </form>):(<></>)}

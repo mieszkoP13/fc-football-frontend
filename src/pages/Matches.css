@@ -136,6 +136,14 @@
     cursor: pointer;
 }
 
+.btn-edit-popup-small {
+    font-size: 18px;
+    color: var(--white);
+    background-color: var(--green-lighter);
+    border: none;
+    cursor: pointer;
+}
+
 .error-txt {
     margin-top: 2px;
     font-size: 11px;

@@ -111,6 +111,32 @@
     text-decoration: none;
 }
 
+.match-select-player {
+    background-color: var(--green-lighter);
+    border-radius: 4px;
+    border: 1px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100px;
+    height: 30px;
+    margin-bottom: 16px;
+    text-decoration: none;
+}
+
+.match-select-minute {
+    background-color: var(--green-lighter);
+    border-radius: 4px;
+    border: 1px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 50px;
+    height: 30px;
+    margin-bottom: 16px;
+    text-decoration: none;
+}
+
 .matches-popup-h1 {
     margin-bottom: 10px;
 }

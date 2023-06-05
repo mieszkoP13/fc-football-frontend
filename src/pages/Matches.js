@@ -7,6 +7,7 @@ import useLoginStatus from "../hooks/useLoginStatus";
 import PopUp from "../components/PopUp";
 import AddMatch from "../components/AddMatch";
 import EditMatch from "../components/EditMatch";
+import EditGoal from "../components/EditGoal";
 import SearchMatch from "../components/SearchMatches";
 import "./Matches.css";
 
@@ -25,34 +26,42 @@ const Matches = (props) => {
 
   const [matches, setMatches] = useState([])
   const [editMatchID, setEditMatchID] = useState(-1)
+  const [editGoalID, setEditGoalID] = useState(-1)
   const [deleteMatchID, setDeleteMatchID] = useState(-1)
 
   useEffect(() => {
     axios
-      .get("https://fcfootball.azurewebsites.net/api/v1/matches?pageSize=1000000000")
+      .get("https://fcfootball.azurewebsites.net/api/v1/matches?pageSize=10000")
       .then((res) => {
         setPageCount(res.data.numberOfElements/pageSize)
       })
       .catch((err) => console.log(err));
 
     axios
-      .get(`https://fcfootball.azurewebsites.net/api/v1/matches?pageSize=${pageSize}&pageNo=${pageNo}`)
+      .get(`https://fcfootball.azurewebsites.net/api/v1/matches-view/all?pageSize=${pageSize}&pageNo=${pageNo}`)
       .then((res) => {
         setMatches(res.data.content)
       })
       .catch((err) => console.log(err));
-  },[isLoggedIn,showPopUp,editMatchID,deleteMatchID,pageNo])
+  },[isLoggedIn,showPopUp,editMatchID,editGoalID,deleteMatchID,pageNo])
 
   const updatePopUpMessage = (popUpMsg) => {
     setPopUpMessage(popUpMsg)
     setShowPopUp(true);
     setEditMatchID(-1)
+    setEditGoalID(-1)
   }
 
   const showEditMatch = (e,id) => {
     e.preventDefault()
     e.stopPropagation()
     setEditMatchID(id)
+  }
+
+  const showEditGoal = (e,id) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setEditGoalID(id)
   }
 
   const showDeleteMatch = (e,id) => {
@@ -84,7 +93,7 @@ const Matches = (props) => {
           {pageNo > 0 ? (<Link className="prev-match" to={'/Matches/' + encodeURIComponent( parseInt(pageNo)-1 )}>
             <span>&#8592;</span>
           </Link>) : (<></>)}
-          <span className="page-no">{pageNo}</span>
+          {pageCount-1 ? (<span className="page-no">{pageNo}</span>):(<></>)}
           {pageNo < pageCount-1 ? (
           <Link className="next-match" to={'/Matches/' + encodeURIComponent( parseInt(pageNo)+1 )}>
             <span>&#8594;</span>
@@ -124,6 +133,40 @@ const Matches = (props) => {
               <span className="matches-it-txt">{match.homeTeam.name}</span>
               <span className="matches-it-txt">{match.homeTeamScore}:{match.awayTeamScore}</span>
               <span className="matches-it-txt">{match.awayTeam.name}</span>
+
+              {match.goals?.map((goal,goalArrayID) =>
+                <>
+                {editGoalID === goalArrayID ? (
+                <>
+                <span className="matches-it-txt"></span>
+                <EditGoal updatePopUpMessage={updatePopUpMessage} match={match} goal={goal}/>
+                <span className="matches-it-txt"></span>
+                </>) : (
+                <>
+                  {match.homeTeam.players.find(player => player.playerId === goal.playerId)?.lastName ? (
+                  <div className="matches-it-txt">
+                    <span className="matches-it-txt">{match.homeTeam.players.find(player => player.playerId === goal.playerId)?.lastName} {goal.time}'</span>
+                    <button className="btn-edit" onClick={e => showEditGoal(e, goalArrayID)}>
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </button>
+                  </div>
+                  ) : (<span className="matches-it-txt"></span>)}
+                  
+                  <span className="matches-it-txt"></span>
+
+                  {match.awayTeam.players.find(player => player.playerId === goal.playerId)?.lastName ? (
+                  <div className="matches-it-txt">
+                    <span className="matches-it-txt">{match.awayTeam.players.find(player => player.playerId === goal.playerId)?.lastName} {goal.time}'</span>
+                    <button className="btn-edit" onClick={e => showEditGoal(e, goalArrayID)}>
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </button>
+                  </div>
+                  ) : (<span className="matches-it-txt"></span>)}
+                </>
+                )}
+                </>
+              )}
+
               <span className="matches-it-txt"></span>
               <span className="matches-it-txt">{match.date}    {match.time}</span>
               
