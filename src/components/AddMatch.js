@@ -61,6 +61,10 @@ const AddMatch = ({updatePopUpMessage}) => {
         <div className="matches-it">
 
         <span className="matches-it-txt"></span>
+        <span className="matches-it-txt"></span>
+        <span className="matches-it-txt"></span>
+
+        <span className="matches-it-txt"></span>
         <div className="input-match-wrap">
         <select className="match-select"
             {...register("leagueId", {
@@ -128,6 +132,10 @@ const AddMatch = ({updatePopUpMessage}) => {
         <button className="btn-edit-popup" type="submit">
             <i className="fa-solid fa-check"></i>
         </button>
+
+        <span className="matches-it-txt"></span>
+        <span className="matches-it-txt"></span>
+        <span className="matches-it-txt"></span>
 
         </div>
     </form>):(<></>)}

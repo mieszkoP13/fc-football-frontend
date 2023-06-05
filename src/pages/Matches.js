@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import axios from "axios";
@@ -7,11 +7,13 @@ import useLoginStatus from "../hooks/useLoginStatus";
 import PopUp from "../components/PopUp";
 import AddMatch from "../components/AddMatch";
 import EditMatch from "../components/EditMatch";
+import AddGoal from "../components/AddGoal";
 import EditGoal from "../components/EditGoal";
 import SearchMatch from "../components/SearchMatches";
 import "./Matches.css";
 
 const Matches = (props) => {
+  const effectRan = useRef(false)
   const pageSize = 10
   const { pageNo = 0 } = useParams()
   const [pageCount, setPageCount] = useState(1)
@@ -26,10 +28,12 @@ const Matches = (props) => {
 
   const [matches, setMatches] = useState([])
   const [editMatchID, setEditMatchID] = useState(-1)
+  const [addGoalMatchID, setAddGoalMatchID] = useState(-1)
   const [editGoalID, setEditGoalID] = useState(-1)
   const [deleteMatchID, setDeleteMatchID] = useState(-1)
 
   useEffect(() => {
+    if( effectRan.current === false ) {
     axios
       .get("https://fcfootball.azurewebsites.net/api/v1/matches?pageSize=10000")
       .then((res) => {
@@ -43,19 +47,28 @@ const Matches = (props) => {
         setMatches(res.data.content)
       })
       .catch((err) => console.log(err));
-  },[isLoggedIn,showPopUp,editMatchID,editGoalID,deleteMatchID,pageNo])
+    }
+    return () => effectRan.current = true
+  },[isLoggedIn,showPopUp,editMatchID,editGoalID,deleteMatchID,addGoalMatchID,pageNo])
 
   const updatePopUpMessage = (popUpMsg) => {
     setPopUpMessage(popUpMsg)
     setShowPopUp(true);
     setEditMatchID(-1)
     setEditGoalID(-1)
+    setAddGoalMatchID(-1)
   }
 
   const showEditMatch = (e,id) => {
     e.preventDefault()
     e.stopPropagation()
     setEditMatchID(id)
+  }
+
+  const showAddGoal = (e,id) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setAddGoalMatchID(id)
   }
 
   const showEditGoal = (e,id) => {
@@ -90,14 +103,16 @@ const Matches = (props) => {
     {(isUserModerator || isUserAdmin) && isLoggedIn ? (
       <>
         <div className="page-nav">
-          {pageNo > 0 ? (<Link className="prev-match" to={'/Matches/' + encodeURIComponent( parseInt(pageNo)-1 )}>
-            <span>&#8592;</span>
-          </Link>) : (<></>)}
-          {pageCount-1 ? (<span className="page-no">{pageNo}</span>):(<></>)}
-          {pageNo < pageCount-1 ? (
-          <Link className="next-match" to={'/Matches/' + encodeURIComponent( parseInt(pageNo)+1 )}>
-            <span>&#8594;</span>
-          </Link>):(<></>)}
+          {pageCount-1 ? (<>
+            {pageNo > 0 ? (<Link className="prev-match" to={'/Matches/' + encodeURIComponent( parseInt(pageNo)-1 )}>
+              <span>&#8592;</span>
+            </Link>) : (<></>)}
+            <span className="page-no">{pageNo}</span>
+            {pageNo < pageCount-1 ? (
+            <Link className="next-match" to={'/Matches/' + encodeURIComponent( parseInt(pageNo)+1 )}>
+              <span>&#8594;</span>
+            </Link>):(<></>)}
+          </>) : (<></>)}
         </div>
         
         <h1 className="matches-h1">Available Matches</h1>
@@ -166,6 +181,15 @@ const Matches = (props) => {
                 )}
                 </>
               )}
+
+              <span className="matches-it-txt"></span>
+              {addGoalMatchID === arrayID ? (
+              <AddGoal updatePopUpMessage={updatePopUpMessage} match={match}/>):(
+              <button className="btn-edit" onClick={e => showAddGoal(e, arrayID)}>
+                <i class="fa-solid fa-plus"></i>
+              </button>)
+              }
+              <span className="matches-it-txt"></span>
 
               <span className="matches-it-txt"></span>
               <span className="matches-it-txt">{match.date}    {match.time}</span>

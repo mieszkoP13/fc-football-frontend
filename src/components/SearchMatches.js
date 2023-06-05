@@ -5,12 +5,7 @@ import "./EditMatch.css"
 import "../pages/Matches.css"
 
 const SearchMatch = ({updateMatches}) => {
-
-    const {
-        register,
-        handleSubmit,
-    } = useForm();
-
+    
     const {
         register: register2,
         handleSubmit: handleSubmit2,
@@ -23,30 +18,21 @@ const SearchMatch = ({updateMatches}) => {
     
     const [leagues, setLeagues] = useState([])
     const [teams, setTeams] = useState(undefined)
-    
-    const filterDate = (data) => {
-        axios
-          .get(`https://fcfootball.azurewebsites.net/api/v1/matches/date/${data.date}`)
-          .then((res) => {
-            updateMatches(res.data)
-          })
-          .catch((err) => console.log(err));
-    }
 
     const filterLeagueTeam = (data) => {
     axios
-        .get(`https://fcfootball.azurewebsites.net/api/v1/matches/league/${data.leagueId}/team/${data.teamId}`)
+        .get(`https://fcfootball.azurewebsites.net/api/v1/matches-view/leagues/${data.leagueId}/teams/${data.teamId}`)
         .then((res) => {
-          updateMatches(res.data)
+          updateMatches(res.data.content)
         })
         .catch((err) => console.log(err));
     }
 
     const filterToday = (data) => {
     axios
-        .get("https://fcfootball.azurewebsites.net/api/v1/matches/today")
+        .get("https://fcfootball.azurewebsites.net/api/v1/matches-view/today")
         .then((res) => {
-            updateMatches(res.data)
+            updateMatches(res.data.content)
         })
         .catch((err) => console.log(err));
     }
@@ -73,18 +59,6 @@ const SearchMatch = ({updateMatches}) => {
 
         <span className="matches-it-txt"></span>
         <span className="matches-it-txt"></span>
-
-        <form onSubmit={handleSubmit(filterDate)}>
-        <span className="search-text">Search by date: </span>
-        <div className="input-match-wrap">
-            <input type="date" min="1989-01-01" max="2023-06-31" className="match-input-date"
-            {...register("date")}/>
-        </div>
-        
-        <button className="btn-edit-popup" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-        </form>
 
         <span className="matches-it-txt"></span>
         <span className="matches-it-txt"></span>

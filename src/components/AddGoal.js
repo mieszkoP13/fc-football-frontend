@@ -3,11 +3,11 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import "./EditMatch.css"
 
-const EditGoal = ({updatePopUpMessage,match,goal}) => {
+const AddGoal = ({updatePopUpMessage,match}) => {
     const [edit, setEdit] = useState(true)
     const hideEdit = () => setEdit(false)
 
-    const [players] = useState(match.homeTeam.players.find(player => player.playerId === goal.playerId) ? match.homeTeam.players : match.awayTeam.players)
+    const [players] = useState(match.homeTeam.players?.concat(match.awayTeam.players)||[])
 
     const {
         register,
@@ -22,12 +22,15 @@ const EditGoal = ({updatePopUpMessage,match,goal}) => {
         data.isOwn = false
 
         axios
-          .put(`https://fcfootball.azurewebsites.net/api/v1/goals/${goal.goalId}`,data)
+          .post(`https://fcfootball.azurewebsites.net/api/v1/goals`,data)
           .then((res) => {
-            updatePopUpMessage("Success. Goal has been edited.")
+            updatePopUpMessage("Success. Goal has been added.")
           })
           .catch((err) => {
-            updatePopUpMessage("Error. Goal hasn't been edited.")
+            if(err.response.status === 409)
+                updatePopUpMessage("Can't save more goals for this team.")
+            else
+                updatePopUpMessage("Error. Goal hasn't been added.")
           });
     }
 
@@ -62,4 +65,4 @@ const EditGoal = ({updatePopUpMessage,match,goal}) => {
     )
 }
 
-export default EditGoal
+export default AddGoal
