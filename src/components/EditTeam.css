@@ -38,34 +38,6 @@
     flex-direction: column;
 }
 
-
-.league-input {
-    background-color: var(--green-lighter);
-    border-radius: 4px;
-    border: 1px solid var(--black);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 200px;
-    height: 30px;
-    margin: 1% 0;
-    text-decoration: none;
-}
-
-.league-select {
-    background-color: var(--green-lighter);
-    border-radius: 4px;
-    border: 1px solid var(--black);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 160px;
-    height: 30px;
-    margin: 1% 0;
-    margin-bottom: 16px;
-    text-decoration: none;
-}
-
 .leagues-popup-h1 {
     margin-bottom: 10px;
 }

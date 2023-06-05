@@ -41,7 +41,7 @@ const FollowedLeagues = (props) => {
   <div className="wrap-followed-leagues">
     {isLoggedIn ? (
       <>
-          <h1 className="followed-leagues-h1">Available leagues</h1>
+          <h1 className="followed-leagues-h1">Followed leagues</h1>
           {leagues.map(league => 
             <Link className="leagues-view-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/TeamsView"} state={ league.id } >
               <span className="followed-leagues-it-txt">{league.name}</span>
