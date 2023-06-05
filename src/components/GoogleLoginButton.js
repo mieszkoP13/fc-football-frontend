@@ -3,7 +3,7 @@ import "./GoogleLoginButton.css";
 
 function GoogleLoginButton() {
   return (
-    <a href="https://fcfootball.azurewebsites.net/oauth2/authorize/google?redirect_uri=http://localhost:3000/users/profile">
+    <a href="https://fcfootball.azurewebsites.net/oauth2/authorize/google?redirect_uri=https://fc-football.azurewebsites.net/users/profile">
       <div className="google-wrap">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="svg-google">
           <g>

@@ -43,7 +43,7 @@ const FollowedLeagues = (props) => {
       <>
           <h1 className="followed-leagues-h1">Available leagues</h1>
           {leagues.map(league => 
-            <Link className="followed-leagues-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/Teams"} state={ league.id } >
+            <Link className="leagues-view-it" to={encodeURIComponent(league.name) + '/' + encodeURIComponent(league.season) +"/TeamsView"} state={ league.id } >
               <span className="followed-leagues-it-txt">{league.name}</span>
               <span className="followed-leagues-it-txt">{league.season}</span>
               <span className="followed-leagues-it-txt">{league.country}</span>

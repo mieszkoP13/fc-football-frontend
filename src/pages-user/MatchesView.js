@@ -23,6 +23,8 @@ const MatchesView = (props) => {
       .catch((err) => console.log(err));
   },[isLoggedIn,teamId])
 
+  useEffect(() => {console.log(matches)},[matches])
+
   return (
   <div className="wrap-matches-view">
     {isLoggedIn ? (
@@ -38,8 +40,18 @@ const MatchesView = (props) => {
               <span className="matches-view-it-txt">{match.homeTeam.name}</span>
               <span className="matches-view-it-txt">{match.homeTeamScore}:{match.awayTeamScore}</span>
               <span className="matches-view-it-txt">{match.awayTeam.name}</span>
+
+              {match.goals?.map(goal =>
+                <>
+                <span className="matches-view-it-txt">{match.homeTeam.players.find(player => player.playerId === goal.playerId)?.lastName} {match.homeTeam.players.find(player => player.playerId === goal.playerId)?.lastName ? goal.time+'`' : null}</span>
+                <span className="matches-view-it-txt"></span>
+                <span className="matches-view-it-txt">{match.awayTeam.players.find(player => player.playerId === goal.playerId)?.lastName} {match.awayTeam.players.find(player => player.playerId === goal.playerId)?.lastName ? goal.time+'`' : null}</span>
+                </>
+              )}
+
               <span className="matches-view-it-txt"></span>
               <span className="matches-view-it-txt">{match.date}    {match.time}</span>
+              <span className="matches-view-it-txt"></span>
             </div>
           </>
         )}

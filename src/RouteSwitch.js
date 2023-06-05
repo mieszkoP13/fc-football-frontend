@@ -28,10 +28,12 @@ const RouteSwitch = () => {
         <Route path="/Leagues" element={<Leagues />} />
         <Route path="/Leagues/:leagueName/:season/Teams" element={<Teams />} />
         <Route path="/Leagues/:leagueName/:season/Teams/:teamName/Players" element={<Players />} />
-        <Route path="/FollowedLeagues" element={<FollowedLeagues />} />
-        <Route path="/FollowedLeagues/:leagueName/:season/Teams" element={<Teams />} />
         <Route path="/Matches" element={<Matches />} />
         <Route path="/Matches/:pageNo" element={<Matches />} />
+
+        <Route path="/FollowedLeagues" element={<FollowedLeagues />} />
+        <Route path="/FollowedLeagues/:leagueName/:season/TeamsView" element={<TeamsView />} />
+        <Route path="/FollowedLeagues/:leagueName/:season/TeamsView/:teamName/MatchesView" element={<MatchesView />} />
 
         <Route path="/LeaguesView" element={<LeaguesView />} />
         <Route path="/LeaguesView/:leagueName/:season/TeamsView" element={<TeamsView />} />
