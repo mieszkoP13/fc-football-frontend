@@ -83,7 +83,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 150px;
+    height: auto;
     margin: 1% 0;
     padding: 0 10px;
     text-decoration: none;
@@ -94,7 +94,7 @@
 }
 
 .matches-it-txt {
-    margin: 0 15px;
+    margin: 10px 15px;
     width: 28%;
     font-size: 22px;
     color: var(--green);

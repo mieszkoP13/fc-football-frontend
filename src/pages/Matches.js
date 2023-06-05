@@ -7,6 +7,7 @@ import useLoginStatus from "../hooks/useLoginStatus";
 import PopUp from "../components/PopUp";
 import AddMatch from "../components/AddMatch";
 import EditMatch from "../components/EditMatch";
+import SearchMatch from "../components/SearchMatches";
 import "./Matches.css";
 
 const Matches = (props) => {
@@ -73,6 +74,8 @@ const Matches = (props) => {
       });
   };
 
+  const updateMatches = (matches) => setMatches(matches)
+
   return (
   <div className="wrap-matches">
     {(isUserModerator || isUserAdmin) && isLoggedIn ? (
@@ -89,6 +92,9 @@ const Matches = (props) => {
         </div>
         
         <h1 className="matches-h1">Available Matches</h1>
+
+        <SearchMatch updateMatches={updateMatches}/>
+
         {showPopUp ? (
         <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
           <h1 className="matches-popup-h1">Add Match info</h1>

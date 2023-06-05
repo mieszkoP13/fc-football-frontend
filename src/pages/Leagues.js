@@ -118,70 +118,41 @@ const Leagues = (props) => {
   };
 
   const filter = (data) => {
+    let url = "https://fcfootball.azurewebsites.net/api/v1/leagues?"
 
-    console.log(data.name)
     if(data.name) {
       if(data.country) {
         if(data.season) {
-          axios
-            .get(`https://fcfootball.azurewebsites.net/api/v1/leagues?name=${data.name}&country=${data.country}&season=${data.season}`)
-            .then((res) => {
-              setLeagues(res.data)
-            })
-            .catch((err) => console.log(err));
+          url += `name=${data.name}&country=${data.country}&season=${data.season}`
         } else {
-          axios
-            .get(`https://fcfootball.azurewebsites.net/api/v1/leagues?country=${data.country}&name=${data.name}`)
-            .then((res) => {
-              setLeagues(res.data)
-            })
-            .catch((err) => console.log(err));
+          url += `country=${data.country}&season=${data.season}`
         }
       } else {
         if(data.season) {
-          axios
-            .get(`https://fcfootball.azurewebsites.net/api/v1/leagues?season=${data.season}&name=${data.name}`)
-            .then((res) => {
-              setLeagues(res.data)
-            })
-            .catch((err) => console.log(err));
+          url += `season=${data.season}&name=${data.name}`
         } else {
-          axios
-            .get(`https://fcfootball.azurewebsites.net/api/v1/leagues?name=${data.name}`)
-            .then((res) => {
-              setLeagues(res.data)
-            })
-            .catch((err) => console.log(err));
+          url += `name=${data.name}`
         }
       }
     } else {
       if(data.country) {
         if(data.season) {
-          axios
-            .get(`https://fcfootball.azurewebsites.net/api/v1/leagues?country=${data.country}&season=${data.season}`)
-            .then((res) => {
-              setLeagues(res.data)
-            })
-            .catch((err) => console.log(err));
+          url += `country=${data.country}&season=${data.season}`
         } else {
-          axios
-            .get(`https://fcfootball.azurewebsites.net/api/v1/leagues?country=${data.country}`)
-            .then((res) => {
-              setLeagues(res.data)
-            })
-            .catch((err) => console.log(err));
+          url += `country=${data.country}`
         }
       } else {
         if(data.season) {
-          axios
-            .get(`https://fcfootball.azurewebsites.net/api/v1/leagues?season=${data.season}`)
-            .then((res) => {
-              setLeagues(res.data)
-            })
-            .catch((err) => console.log(err));
+          url += `season=${data.season}`
         }
       }
     }
+    axios
+      .get(url)
+      .then((res) => {
+        setLeagues(res.data)
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -211,7 +182,7 @@ const Leagues = (props) => {
                 </select>
             </div>
             <button className="btn-edit-popup" type="submit">
-              <i className="fa-solid fa-check"></i>
+              <i class="fa-solid fa-magnifying-glass"></i>
             </button>
             </div>
           </form>

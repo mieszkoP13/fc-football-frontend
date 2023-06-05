@@ -23,8 +23,6 @@ const MatchesView = (props) => {
       .catch((err) => console.log(err));
   },[isLoggedIn,teamId])
 
-  useEffect(() => {console.log(matches)},[matches])
-
   return (
   <div className="wrap-matches-view">
     {isLoggedIn ? (
