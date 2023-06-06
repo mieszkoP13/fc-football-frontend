@@ -97,6 +97,19 @@
     text-decoration: none;
 }
 
+.search-match-select {
+    background-color: var(--green-lighter);
+    border-radius: 4px;
+    border: 1px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180px;
+    height: 30px;
+    margin-bottom: 16px;
+    text-decoration: none;
+}
+
 .match-select-score {
     background-color: var(--green-lighter);
     border-radius: 4px;

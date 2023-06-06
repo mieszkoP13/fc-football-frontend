@@ -22,6 +22,7 @@ const Matches = (props) => {
   let isLoggedIn = useLoginStatus()
 
   const [showPopUpDelete, setShowPopUpDelete] = useState(false);
+  const [showPopUpDeleteGoal, setShowPopUpDeleteGoal] = useState(false);
   
   const [showPopUp, setShowPopUp] = useState(false);
   const [popUpMessage, setPopUpMessage] = useState("")
@@ -31,6 +32,7 @@ const Matches = (props) => {
   const [addGoalMatchID, setAddGoalMatchID] = useState(-1)
   const [editGoalID, setEditGoalID] = useState(-1)
   const [deleteMatchID, setDeleteMatchID] = useState(-1)
+  const [deleteGoalID, setDeleteGoalID] = useState(-1)
 
   useEffect(() => {
     if( effectRan.current === false ) {
@@ -49,7 +51,7 @@ const Matches = (props) => {
       .catch((err) => console.log(err));
     }
     return () => effectRan.current = true
-  },[isLoggedIn,showPopUp,editMatchID,editGoalID,deleteMatchID,addGoalMatchID,pageNo])
+  },[isLoggedIn,showPopUp,editMatchID,editGoalID,deleteMatchID,addGoalMatchID,deleteGoalID,pageNo])
 
   const updatePopUpMessage = (popUpMsg) => {
     setPopUpMessage(popUpMsg)
@@ -84,6 +86,13 @@ const Matches = (props) => {
     setShowPopUpDelete(true)
   }
 
+  const showDeleteGoal = (e,id) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDeleteGoalID(id)
+    setShowPopUpDeleteGoal(true)
+  }
+
   const deleteMatch = (id) => {
     axios
       .delete(
@@ -93,6 +102,18 @@ const Matches = (props) => {
       })
       .catch((err) => {
         setDeleteMatchID(-1)
+      });
+  };
+
+  const deleteGoal = (id) => {
+    axios
+      .delete(
+        `https://fcfootball.azurewebsites.net/api/v1/goals/${id}`)
+      .then((res) => {
+        setDeleteGoalID(-1)
+      })
+      .catch((err) => {
+        setDeleteGoalID(-1)
       });
   };
 
@@ -138,6 +159,15 @@ const Matches = (props) => {
         </PopUp>) : (<></>)
         }
 
+        {showPopUpDeleteGoal ? (
+        <PopUp setShow={setShowPopUpDeleteGoal} customFunction={()=>deleteGoal(deleteGoalID)} customFunctionBtnText="Delete" defaultBtnText="Cancel">
+          <h1 className="sign-in-err-h1">
+            Are you sure you want to delete this goal?
+          </h1>
+          <span>This action is irreversible</span>
+        </PopUp>) : (<></>)
+        }
+
         {matches.map((match, arrayID) => 
           <>
           {editMatchID === arrayID ? (<EditMatch updatePopUpMessage={updatePopUpMessage} match={match}/>) : (
@@ -161,8 +191,11 @@ const Matches = (props) => {
                   {match.homeTeam.players.find(player => player.playerId === goal.playerId)?.lastName ? (
                   <div className="matches-it-txt">
                     <span className="matches-it-txt">{match.homeTeam.players.find(player => player.playerId === goal.playerId)?.lastName} {goal.time}'</span>
-                    <button className="btn-edit" onClick={e => showEditGoal(e, goalArrayID)}>
+                    <button className="btn-edit-popup-small" onClick={e => showEditGoal(e, goalArrayID)}>
                       <i className="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button className="btn-edit-popup-small" onClick={e => showDeleteGoal(e, goal.goalId)}>
+                      <i class="fa-solid fa-trash-can"></i>
                     </button>
                   </div>
                   ) : (<span className="matches-it-txt"></span>)}
@@ -172,10 +205,15 @@ const Matches = (props) => {
                   {match.awayTeam.players.find(player => player.playerId === goal.playerId)?.lastName ? (
                   <div className="matches-it-txt">
                     <span className="matches-it-txt">{match.awayTeam.players.find(player => player.playerId === goal.playerId)?.lastName} {goal.time}'</span>
-                    <button className="btn-edit" onClick={e => showEditGoal(e, goalArrayID)}>
+                    
+                    <button className="btn-edit-popup-small" onClick={e => showEditGoal(e, goalArrayID)}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </button>
-                  </div>
+                    <button className="btn-edit-popup-small" onClick={e => showDeleteGoal(e, goal.goalId)}>
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    </div>
+                  
                   ) : (<span className="matches-it-txt"></span>)}
                 </>
                 )}

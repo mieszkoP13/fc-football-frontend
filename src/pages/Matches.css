@@ -137,7 +137,8 @@
 }
 
 .btn-edit-popup-small {
-    font-size: 18px;
+    margin: 0 5px;
+    font-size: 19px;
     color: var(--white);
     background-color: var(--green-lighter);
     border: none;

@@ -67,11 +67,11 @@ const SearchMatch = ({updateMatches}) => {
         <span className="search-text">Search by league and team: </span>
         
         <div className="input-match-wrap">
-            <select className="match-select"
+            <select className="search-match-select"
             {...register2("leagueId", {
                 required: true,
             })}>
-            {leagues.map(league => <option value={league.id}>{league.name}</option>)}
+            {leagues.map(league => <option value={league.id}>{league.name} {league.season}</option>)}
             </select>
         </div>
 
