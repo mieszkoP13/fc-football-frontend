@@ -83,10 +83,10 @@ const AdminPanel = (props) => {
   <div className="wrap-teams">
     {isUserAdmin && isLoggedIn ? (
       <>
-        <h1 className="teams-h1">Available teams</h1>
+        <h1 className="teams-h1">Available Users</h1>
         {showPopUp ? (
         <PopUp setShow={setShowPopUp} defaultBtnText="Ok">
-          <h1 className="matches-popup-h1">Edit Match info</h1>
+          <h1 className="matches-popup-h1">Edit User info</h1>
           <span>
             {popUpMessage}
           </span>
