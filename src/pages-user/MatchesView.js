@@ -58,7 +58,7 @@ const MatchesView = (props) => {
               <span className="matches-view-it-txt"></span>
               <span className="matches-view-it-txt">
                 Away team players: <select className="match-view-select-player">
-                  {match.homeTeam.players.map(player => <option>{player.firstName} {player.lastName}</option>)}
+                  {match.awayTeam.players.map(player => <option>{player.firstName} {player.lastName}</option>)}
                 </select>
               </span>
 
